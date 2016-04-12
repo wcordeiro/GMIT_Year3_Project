@@ -9,7 +9,7 @@ public class Nodo {
 	public Tabuleiro estado;
 	public Jogada jogada;
 	public Integer profundidade;
-	public Cor corJogador;
+	public Color corJogador;
 	public boolean isFolha = false;
 	// Função de avaliação [PRETO|BRANCO]
 	public Double [] fnAvaliacao;
@@ -29,13 +29,13 @@ public class Nodo {
 	
 		this.antecessor.filhos.add(this);
 		
-		this.corJogador = Cor.getCorOposta(this.antecessor.corJogador);
+		this.corJogador = Color.getOpositeColor(this.antecessor.corJogador);
 		
 		// TODO
 		this.filhos = new ArrayList<Nodo>();
 	}
 	
-	public Nodo(Tabuleiro tabuleiro, Cor corJogador) {
+	public Nodo(Tabuleiro tabuleiro, Color corJogador) {
 		
 		this.estado = tabuleiro;
 		this.profundidade = 0;
@@ -49,10 +49,10 @@ public class Nodo {
 		return this.antecessor == null;
 	}
 	
-	public Double fnAvaliacao(Cor cor) {
-		if(cor == Cor.PRETO)
+	public Double fnAvaliacao(Color cor) {
+		if(cor == Color.BLACK)
 			return fnAvaliacao[0];
-		else if(cor == Cor.BRANCO)
+		else if(cor == Color.WHITE)
 			return fnAvaliacao[1];
 		else
 			return -1.0;

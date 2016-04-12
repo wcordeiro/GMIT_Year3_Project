@@ -5,13 +5,13 @@ public class Movimento {
 	public Posicao espacoVazio;
 	public Posicao pecaJogador;
 	// Da vazia até a peça do jogador.
-	public Direcao direcao;
+	public Direction direcao;
 	public Integer pecasViradas;
 
 	public Movimento(
 			Posicao espacoVazio, 
 			Posicao pecaJogador,
-			Direcao direcao,
+			Direction direcao,
 			Integer pecasViradas) {
 		
 		this.espacoVazio = espacoVazio;

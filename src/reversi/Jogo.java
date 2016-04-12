@@ -53,7 +53,7 @@ public class Jogo {
     }
 
   }
-  private InteligenciaArtificial IA;
+  private AI IA;
   private Stack pilhaTabuleiros;
   private Tabuleiro t;
   private JPanel frame;
@@ -70,35 +70,35 @@ public class Jogo {
   private Boolean isWainting;
 
   private void jogarContraHumano() {
-    String opcao = JOptionPane.showInputDialog("Escolha uma cor (" + IA.COR_PRIMEIRO_JOGADOR.name() + " começa):\n"
+    String opcao = JOptionPane.showInputDialog("Escolha uma cor (" + IA.BEGGINER_COLOR.name() + " começa):\n"
             + "1 - Preto\n2 - Branco");
-    IA.dificuldade = JOptionPane.showInputDialog("Escolha uma dificuldade:\n"
+    IA.level = JOptionPane.showInputDialog("Escolha uma dificuldade:\n"
             + "1 - Facil\n2 - Medio\n3 - Dificil");
 
-    if (IA.dificuldade.equals("1")) {
-      IA.PROFUNDIDADE_PADRAO = 5;
-    } else if (IA.dificuldade.equals("2")) {
-      IA.PROFUNDIDADE_PADRAO = 5;
+    if (IA.level.equals("1")) {
+      IA.DEFAUTL_DEPTH = 5;
+    } else if (IA.level.equals("2")) {
+      IA.DEFAUTL_DEPTH = 5;
     } else {
-      IA.PROFUNDIDADE_PADRAO = 6;
+      IA.DEFAUTL_DEPTH = 6;
     }
 
     if (opcao.equals("1")) {
-      IA.corHumano = Cor.PRETO;
+      IA.humanColor = Color.BLACK;
     } else if (opcao.equals("2")) {
-      IA.corHumano = Cor.BRANCO;
+      IA.humanColor = Color.WHITE;
     } else {
-      IA.corHumano = Cor.PRETO;
+      IA.humanColor = Color.BLACK;
     }
 
     // -------------------------------------
-    IA.tabuleiro = new Tabuleiro();
-    List<Jogada> jogadas = IA.tabuleiro.calculaJogadasPossiveisJogador(IA.corHumano);
+    IA.board = new Tabuleiro();
+    List<Jogada> jogadas = IA.board.calculaJogadasPossiveisJogador(IA.humanColor);
     for (int i = 0; i < B.length; i++) {
       for (int j = 0; j < B[i].length; j++) {
-        if (IA.tabuleiro.getCor(new Posicao(i, j)) == Cor.PRETO) {
+        if (IA.board.getCor(new Posicao(i, j)) == Color.BLACK) {
           B[i][j].setIcon(new ImageIcon("black.png"));
-        } else if (IA.tabuleiro.getCor(new Posicao(i, j)) == Cor.BRANCO) {
+        } else if (IA.board.getCor(new Posicao(i, j)) == Color.WHITE) {
           B[i][j].setIcon(new ImageIcon("white.png"));
         } else {
           B[i][j].setIcon(new ImageIcon("none.png"));
@@ -112,30 +112,30 @@ public class Jogo {
         }
       }
     }
-    Cor corDaVez = IA.COR_PRIMEIRO_JOGADOR;
+    Color corDaVez = IA.BEGGINER_COLOR;
     Jogada jogada = null;
 
     while (true) {
 
-      TreeMap<Cor, List<Jogada>> jogadasPossiveis
-              = new TreeMap<Cor, List<Jogada>>();
+      TreeMap<Color, List<Jogada>> jogadasPossiveis
+              = new TreeMap<Color, List<Jogada>>();
 
       jogadasPossiveis.put(
-              Cor.PRETO,
-              IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.PRETO)
+              Color.BLACK,
+              IA.board.calculaJogadasPossiveisJogador(Color.BLACK)
       );
 
       jogadasPossiveis.put(
-              Cor.BRANCO,
-              IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.BRANCO)
+              Color.WHITE,
+              IA.board.calculaJogadasPossiveisJogador(Color.WHITE)
       );
 
-      if (jogadasPossiveis.get(Cor.PRETO) == null
-              && jogadasPossiveis.get(Cor.BRANCO) == null) {
+      if (jogadasPossiveis.get(Color.BLACK) == null
+              && jogadasPossiveis.get(Color.WHITE) == null) {
         break;
       }
 
-      if (corDaVez == IA.corHumano && jogadasPossiveis.get(corDaVez) != null) {
+      if (corDaVez == IA.humanColor && jogadasPossiveis.get(corDaVez) != null) {
 
         do {
           int x = Util.leInteiro(0, Tabuleiro.TAMANHO - 1);
@@ -143,7 +143,7 @@ public class Jogo {
           
           System.out.println(x+""+y);
 
-          jogada = IA.tabuleiro.calculaJogada(new Posicao(y, x), corDaVez);
+          jogada = IA.board.calculaJogada(new Posicao(y, x), corDaVez);
 
           if (jogada == null)
 						;
@@ -153,7 +153,7 @@ public class Jogo {
 
         long tempoInicio = System.currentTimeMillis();
 
-        jogada = IA.play(IA.tabuleiro, corDaVez);
+        jogada = IA.play(IA.board, corDaVez);
 
         long tempoFinal = System.currentTimeMillis() - tempoInicio;
         Double segundos = ((double) tempoFinal) / 1000;
@@ -161,10 +161,10 @@ public class Jogo {
       }
 
       if (jogada != null) {                
-        IA.tabuleiro.executaJogada(jogada);
+        IA.board.executaJogada(jogada);
       }
 
-      corDaVez = Cor.getCorOposta(corDaVez);
+      corDaVez = Color.getOpositeColor(corDaVez);
       imprimeTabuleiro(corDaVez);
     }
     
@@ -196,22 +196,22 @@ public class Jogo {
 		  IA.dificuldade = "3";
 		  IA.PROFUNDIDADE_PADRAO = 6;
 	  }*/
-	  IA.dificuldade = "3";
-	  IA.PROFUNDIDADE_PADRAO = 1;
-	  IA.corHumano = Cor.BRANCO;
+	  IA.level = "3";
+	  IA.DEFAUTL_DEPTH = 1;
+	  IA.humanColor = Color.WHITE;
 	  Map<Posicao,Double> movementsMap = new HashMap<Posicao,Double>();
 	  SVM svm = new SVM();
 	  
 	  FileWriter fw = new FileWriter("teste.txt",true );
 	  BufferedWriter bw = new BufferedWriter( fw );
 	  
-	  IA.tabuleiro = new Tabuleiro();
-	    List<Jogada> jogadas = IA.tabuleiro.calculaJogadasPossiveisJogador(IA.corHumano);
+	  IA.board = new Tabuleiro();
+	    List<Jogada> jogadas = IA.board.calculaJogadasPossiveisJogador(IA.humanColor);
 	    for (int i = 0; i < B.length; i++) {
 	      for (int j = 0; j < B[i].length; j++) {
-	        if (IA.tabuleiro.getCor(new Posicao(i, j)) == Cor.PRETO) {
+	        if (IA.board.getCor(new Posicao(i, j)) == Color.BLACK) {
 	          B[i][j].setIcon(new ImageIcon("black.png"));
-	        } else if (IA.tabuleiro.getCor(new Posicao(i, j)) == Cor.BRANCO) {
+	        } else if (IA.board.getCor(new Posicao(i, j)) == Color.WHITE) {
 	          B[i][j].setIcon(new ImageIcon("white.png"));
 	        } else {
 	          B[i][j].setIcon(new ImageIcon("none.png"));
@@ -225,26 +225,26 @@ public class Jogo {
 	        }
 	      }
 	    }
-	    Cor corDaVez = IA.COR_PRIMEIRO_JOGADOR;
+	    Color corDaVez = IA.BEGGINER_COLOR;
 	    Jogada jogada = null;
 
 	    while (true) {
 
-	      TreeMap<Cor, List<Jogada>> jogadasPossiveis
-	              = new TreeMap<Cor, List<Jogada>>();
+	      TreeMap<Color, List<Jogada>> jogadasPossiveis
+	              = new TreeMap<Color, List<Jogada>>();
 
 	      jogadasPossiveis.put(
-	              Cor.PRETO,
-	              IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.PRETO)
+	              Color.BLACK,
+	              IA.board.calculaJogadasPossiveisJogador(Color.BLACK)
 	      );
 
 	      jogadasPossiveis.put(
-	              Cor.BRANCO,
-	              IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.BRANCO)
+	              Color.WHITE,
+	              IA.board.calculaJogadasPossiveisJogador(Color.WHITE)
 	      );
 
-	      if (jogadasPossiveis.get(Cor.PRETO) == null
-	              && jogadasPossiveis.get(Cor.BRANCO) == null) {
+	      if (jogadasPossiveis.get(Color.BLACK) == null
+	              && jogadasPossiveis.get(Color.WHITE) == null) {
 	    	  FileReader fr = null;
 	    	  FileWriter fwF = null;
 	    	  BufferedWriter bwF = null;
@@ -256,9 +256,9 @@ public class Jogo {
 	    	  fr.close();
 	    	  br.close();
 	    	  Integer index = 1;
-	    	  TreeMap<Cor, Integer> numPecas = IA.tabuleiro.calculaNumeroPecas();
-	    	  Integer numPretas = numPecas.get(Cor.PRETO);
-	  	      Integer numBrancas = numPecas.get(Cor.BRANCO);
+	    	  TreeMap<Color, Integer> numPecas = IA.board.calculaNumeroPecas();
+	    	  Integer numPretas = numPecas.get(Color.BLACK);
+	  	      Integer numBrancas = numPecas.get(Color.WHITE);
 	  	      if(numPretas < numBrancas){
 	  	    	  win++;
 	  	    	  fwF = new FileWriter("Test/win"+win.toString()+".txt");
@@ -294,7 +294,7 @@ public class Jogo {
 	    	  fwF.close();
 	    	  break;
 	      }
-	      if(corDaVez == Cor.PRETO){
+	      if(corDaVez == Color.BLACK){
 	    	//  jogada = IA.play(IA.tabuleiro, corDaVez);
 	    	  Random rand = new Random();
 	    	  try{
@@ -314,16 +314,16 @@ public class Jogo {
 	    	  catch (Exception e){
 	    		jogada = null;
 	    	  }
-	    	  jogada = IA.play(IA.tabuleiro, corDaVez);
+	    	  jogada = IA.play(IA.board, corDaVez);
 	      }
 	      else
 	    	  jogada = svm.evaluatePositions(corDaVez, IA,movementsMap);
 	      
 	      if (jogada != null) {                
-	          IA.tabuleiro.executaJogada(jogada);
-	          Nodo nodo = new Nodo(IA.tabuleiro,corDaVez);
+	          IA.board.executaJogada(jogada);
+	          Nodo nodo = new Nodo(IA.board,corDaVez);
 	          Nodo filho = new Nodo(nodo, jogada);
-	          jogada.evalScore = IA.calculaFuncaoAvaliacaoDificil(filho.estado, corDaVez);
+	          jogada.evalScore = IA.calculateLevelHardFunction(filho.estado, corDaVez);
 	          movementsMap.put(jogada.posicaoVazia, jogada.evalScore);
 	       //   if(corDaVez == Cor.BRANCO)
 	       // 	  bw.write("+" + jogada.posicaoVazia.x + jogada.posicaoVazia.y);
@@ -334,7 +334,7 @@ public class Jogo {
 	      
 	      
 
-	        corDaVez = Cor.getCorOposta(corDaVez);
+	        corDaVez = Color.getOpositeColor(corDaVez);
 	        imprimeTabuleiro(corDaVez);
 	    /*    try {
 				Thread.currentThread().sleep(100);
@@ -344,10 +344,10 @@ public class Jogo {
 			}*/
 	      
 	    }
-	    TreeMap<Cor, Integer> numPecas = IA.tabuleiro.calculaNumeroPecas();
+	    TreeMap<Color, Integer> numPecas = IA.board.calculaNumeroPecas();
 
-	    Integer numPretas = numPecas.get(Cor.PRETO);
-	    Integer numBrancas = numPecas.get(Cor.BRANCO);
+	    Integer numPretas = numPecas.get(Color.BLACK);
+	    Integer numBrancas = numPecas.get(Color.WHITE);
 	    bw.write(": +" + numPretas + " " + numBrancas);
 	    bw.newLine();
 	    bw.close();
@@ -355,14 +355,14 @@ public class Jogo {
 	  
   }
 
-  public void imprimeTabuleiro(Cor color) {
-    List<Jogada> jogadasPossiveis = IA.tabuleiro.calculaJogadasPossiveisJogador(color);
+  public void imprimeTabuleiro(Color color) {
+    List<Jogada> jogadasPossiveis = IA.board.calculaJogadasPossiveisJogador(color);
     for (int i = 0; i < B.length; i++) {
       for (int j = 0; j < B[i].length; j++) {
     	  
-        if (IA.tabuleiro.getCor(new Posicao(i, j)) == Cor.PRETO) {
+        if (IA.board.getCor(new Posicao(i, j)) == Color.BLACK) {
           B[i][j].setIcon(new ImageIcon("black.png"));
-        } else if (IA.tabuleiro.getCor(new Posicao(i, j)) == Cor.BRANCO) {
+        } else if (IA.board.getCor(new Posicao(i, j)) == Color.WHITE) {
           B[i][j].setIcon(new ImageIcon("white.png"));
         } else {
           B[i][j].setIcon(new ImageIcon("none.png"));
@@ -376,10 +376,10 @@ public class Jogo {
         }
       }
     }
-    TreeMap<Cor, Integer> numPecas = IA.tabuleiro.calculaNumeroPecas();
+    TreeMap<Color, Integer> numPecas = IA.board.calculaNumeroPecas();
 
-    Integer numPretas = numPecas.get(Cor.PRETO);
-    Integer numBrancas = numPecas.get(Cor.BRANCO);
+    Integer numPretas = numPecas.get(Color.BLACK);
+    Integer numBrancas = numPecas.get(Color.WHITE);
     white_points.setText(numBrancas+ "p.");
     black_points.setText(numPretas+ "p.");
   }
@@ -393,19 +393,19 @@ public class Jogo {
         public Void doInBackground() {
           if(isWainting) 
             return null;
-          t = IA.tabuleiro.clone();         
+          t = IA.board.clone();         
           pilhaTabuleiros.push(t);
           for (int i = 0; i < B.length; i++) {
             for (int j = 0; j < B[i].length; j++) {
               if (e.getSource() == B[i][j]) {
-                Jogada jogada = IA.tabuleiro.calculaJogada(new Posicao(i, j), IA.corHumano);
+                Jogada jogada = IA.board.calculaJogada(new Posicao(i, j), IA.humanColor);
                 try {
-                  IA.tabuleiro.executaJogada(jogada);
+                  IA.board.executaJogada(jogada);
                   isWainting = true;                  
-                  imprimeTabuleiro(Cor.getCorOposta(IA.corHumano));
-                  Jogada play = IA.play(IA.tabuleiro, Cor.getCorOposta(IA.corHumano));                  
+                  imprimeTabuleiro(Color.getOpositeColor(IA.humanColor));
+                  Jogada play = IA.play(IA.board, Color.getOpositeColor(IA.humanColor));                  
                   if (play != null) {                    
-                    IA.tabuleiro.executaJogada(play);                    
+                    IA.board.executaJogada(play);                    
                   }
                   try {
                     Thread.sleep(1000);                 //1000 milliseconds is one second.
@@ -413,43 +413,43 @@ public class Jogo {
                     Thread.currentThread().interrupt();
                   }
                   isWainting = false;
-                  imprimeTabuleiro(IA.corHumano);
-                  TreeMap<Cor, List<Jogada>> jogadasPossiveis
-                          = new TreeMap<Cor, List<Jogada>>();
+                  imprimeTabuleiro(IA.humanColor);
+                  TreeMap<Color, List<Jogada>> jogadasPossiveis
+                          = new TreeMap<Color, List<Jogada>>();
 
                   jogadasPossiveis.put(
-                          Cor.PRETO,
-                          IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.PRETO)
+                          Color.BLACK,
+                          IA.board.calculaJogadasPossiveisJogador(Color.BLACK)
                   );
 
                   jogadasPossiveis.put(
-                          Cor.BRANCO,
-                          IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.BRANCO)
+                          Color.WHITE,
+                          IA.board.calculaJogadasPossiveisJogador(Color.WHITE)
                   );
-                  while (jogadasPossiveis.get(IA.corHumano) == null && jogadasPossiveis.get(Cor.getCorOposta(IA.corHumano)) != null) {
-                    play = IA.play(IA.tabuleiro, Cor.getCorOposta(IA.corHumano));
+                  while (jogadasPossiveis.get(IA.humanColor) == null && jogadasPossiveis.get(Color.getOpositeColor(IA.humanColor)) != null) {
+                    play = IA.play(IA.board, Color.getOpositeColor(IA.humanColor));
                     if (play != null) {
 //                      t = IA.tabuleiro.clone();         
 //                      pilhaTabuleiros.push(t);
-                      IA.tabuleiro.executaJogada(play);
+                      IA.board.executaJogada(play);
                     }
-                    imprimeTabuleiro(IA.corHumano);
+                    imprimeTabuleiro(IA.humanColor);
                     frame.repaint();
                     jogadasPossiveis.put(
-                            Cor.PRETO,
-                            IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.PRETO)
+                            Color.BLACK,
+                            IA.board.calculaJogadasPossiveisJogador(Color.BLACK)
                     );
 
                     jogadasPossiveis.put(
-                            Cor.BRANCO,
-                            IA.tabuleiro.calculaJogadasPossiveisJogador(Cor.BRANCO)
+                            Color.WHITE,
+                            IA.board.calculaJogadasPossiveisJogador(Color.WHITE)
                     );
                   }
-                  if (jogadasPossiveis.get(Cor.PRETO) == null
-                          && jogadasPossiveis.get(Cor.BRANCO) == null) {
-                    TreeMap<Cor, Integer> numPecas = IA.tabuleiro.calculaNumeroPecas();
-                    Integer numPretas = numPecas.get(Cor.PRETO);
-                    Integer numBrancas = numPecas.get(Cor.BRANCO);
+                  if (jogadasPossiveis.get(Color.BLACK) == null
+                          && jogadasPossiveis.get(Color.WHITE) == null) {
+                    TreeMap<Color, Integer> numPecas = IA.board.calculaNumeroPecas();
+                    Integer numPretas = numPecas.get(Color.BLACK);
+                    Integer numBrancas = numPecas.get(Color.WHITE);
                     String msg = "Placar:\nPretas: " + numPretas + "\nBrancas: " + numBrancas;
                     JOptionPane.showMessageDialog(frame, msg);
                     System.exit(0);
@@ -487,8 +487,8 @@ public class Jogo {
           JOptionPane.showMessageDialog(bigger_frame, "Não existem mais movimentos para desfazer.");
         }
         else{
-          IA.tabuleiro = (Tabuleiro) pilhaTabuleiros.pop();          
-          imprimeTabuleiro(IA.corHumano);
+          IA.board = (Tabuleiro) pilhaTabuleiros.pop();          
+          imprimeTabuleiro(IA.humanColor);
         }
       }
     }
@@ -497,7 +497,7 @@ public class Jogo {
   public void iniciaJogo(int k) {
     pilhaTabuleiros = new Stack();
     isWainting = false;
-    IA = new InteligenciaArtificial();
+    IA = new AI();
     bigger_frame = new JFrame("Reversi");
     bigger_frame.setSize(800,900);
     bigger_frame.setLayout(new BorderLayout());

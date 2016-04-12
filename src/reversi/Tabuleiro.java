@@ -11,32 +11,32 @@ public class Tabuleiro {
 	
 	public static final Integer TAMANHO = 8;
 	
-	private Cor [][] tabuleiro;
+	private Color [][] tabuleiro;
 
 	public Tabuleiro() {
-		this.tabuleiro = new Cor[TAMANHO][TAMANHO];
+		this.tabuleiro = new Color[TAMANHO][TAMANHO];
 		
 		// Inicializa tabuleiro
 		for(int y=0 ; y<TAMANHO ; y++)
 			for(int x=0 ; x<TAMANHO ; x++)
-				this.tabuleiro[y][x] = Cor.VAZIO;
+				this.tabuleiro[y][x] = Color.BLANK;
 		
 		// Inicializa peças.
-		setPosicao(new Posicao(TAMANHO/2-1, TAMANHO/2-1), Cor.BRANCO);
-		setPosicao(new Posicao(TAMANHO/2, TAMANHO/2-1), Cor.PRETO);
-		setPosicao(new Posicao(TAMANHO/2-1, TAMANHO/2), Cor.PRETO);
-		setPosicao(new Posicao(TAMANHO/2, TAMANHO/2), Cor.BRANCO);
+		setPosicao(new Posicao(TAMANHO/2-1, TAMANHO/2-1), Color.WHITE);
+		setPosicao(new Posicao(TAMANHO/2, TAMANHO/2-1), Color.BLACK);
+		setPosicao(new Posicao(TAMANHO/2-1, TAMANHO/2), Color.BLACK);
+		setPosicao(new Posicao(TAMANHO/2, TAMANHO/2), Color.WHITE);
 	}
 	
-	public void setPosicao(Posicao posicao, Cor cor) {
+	public void setPosicao(Posicao posicao, Color cor) {
 		this.tabuleiro[posicao.y][posicao.x] = cor; 
 	}
 
-	public Cor getCor(Posicao posicao) {
+	public Color getCor(Posicao posicao) {
 		return this.tabuleiro[posicao.y][posicao.x];
 	}
 	
-	public Jogada calculaJogada(Posicao lugarVazio, Cor corJogador) {
+	public Jogada calculaJogada(Posicao lugarVazio, Color corJogador) {
 		
 		Jogada jogada = null;
 		
@@ -51,12 +51,12 @@ public class Tabuleiro {
 	
 	public List<Movimento> calculaMovimentosPossiveis(
 			Posicao lugarVazio, 
-			Cor corJogador) 
+			Color corJogador) 
 	{
 		
 		List<Movimento> movimentos = new ArrayList<Movimento>();
 			
-		for(Direcao direcao : Direcao.getAll()) {
+		for(Direction direcao : Direction.getAll()) {
 			
 			Movimento movimento = procuraMovimentoDirecao(lugarVazio, corJogador, direcao);
 			if(movimento != null)
@@ -69,7 +69,7 @@ public class Tabuleiro {
 		return movimentos;
 	}
 
-	public List<Jogada> calculaJogadasPossiveisJogador(Cor corJogador) {
+	public List<Jogada> calculaJogadasPossiveisJogador(Color corJogador) {
 
 		List<Jogada> jogadas = new ArrayList<Jogada>();
 		
@@ -96,7 +96,7 @@ public class Tabuleiro {
 		
 		for(int y=0 ; y<TAMANHO ; y++)
 			for(int x=0 ; x<TAMANHO ; x++)
-				if(this.tabuleiro[y][x] == Cor.VAZIO)
+				if(this.tabuleiro[y][x] == Color.BLANK)
 					vazias.add(new Posicao(y, x));
 		
 		return vazias;
@@ -104,44 +104,44 @@ public class Tabuleiro {
 	
 	public Movimento procuraMovimentoDirecao(
 			Posicao lugarVazio, 
-			Cor corJogador,
-			Direcao direcao) 
+			Color corJogador,
+			Direction direcao) 
 	{
 		
-		Cor corOposta = Cor.getCorOposta(corJogador);
+		Color corOposta = Color.getOpositeColor(corJogador);
 		int y = lugarVazio.y;
 		int x = lugarVazio.x;
 		boolean temPecasParaReverter = false;
 		int numeroPecasViradas = 0;
-		Cor corPosicao = getCor(lugarVazio);
+		Color corPosicao = getCor(lugarVazio);
 
-		if(corPosicao != Cor.VAZIO)
+		if(corPosicao != Color.BLANK)
 			return null;
 		
 		while(corPosicao != corJogador) {
 			
 			// Avança na direção
-			if(direcao == Direcao.DIREITA)
+			if(direcao == Direction.RIGTH)
 				x++;
-			else if(direcao == Direcao.ESQUERDA)
+			else if(direcao == Direction.LEFT)
 				x--;
-			else if(direcao == Direcao.CIMA)
+			else if(direcao == Direction.UP)
 				y--;
-			else if(direcao == Direcao.BAIXO)
+			else if(direcao == Direction.DOWN)
 				y++;
-			else if(direcao == Direcao.BAIXO_DIREITA) {
+			else if(direcao == Direction.DOWN_RIGTH) {
 				y++;
 				x++;
 			}
-			else if(direcao == Direcao.BAIXO_ESQUERDA) {
+			else if(direcao == Direction.DOWN_LEFT) {
 				y++;
 				x--;
 			}
-			else if(direcao == Direcao.CIMA_DIREITA) {
+			else if(direcao == Direction.UP_RIGTH) {
 				y--;
 				x++;
 			}
-			else if(direcao == Direcao.CIMA_ESQUERDA) {
+			else if(direcao == Direction.UP_LEFT) {
 				y--;
 				x--;
 			}
@@ -153,7 +153,7 @@ public class Tabuleiro {
 			corPosicao = getCor(new Posicao(y, x));
 						
 			// Não pode sair de vazio e ir p/ vazio.
-			if(corPosicao == Cor.VAZIO)
+			if(corPosicao == Color.BLANK)
 				return null;
 			else if(corPosicao == corOposta)
 				temPecasParaReverter = true;
@@ -176,8 +176,8 @@ public class Tabuleiro {
 	public void executaMovimento(Movimento movimento) {
 		
 		Posicao lugarVazio = movimento.espacoVazio;
-		Direcao direcao = movimento.direcao;
-		Cor corJogador = getCor(movimento.pecaJogador);
+		Direction direcao = movimento.direcao;
+		Color corJogador = getCor(movimento.pecaJogador);
 
 		// Coloca a nova peça.
 		setPosicao(lugarVazio, corJogador);
@@ -189,27 +189,27 @@ public class Tabuleiro {
 		for(int cont=1 ; cont <= movimento.pecasViradas; cont++) {
 			
 			// Avança na direção
-			if(direcao == Direcao.DIREITA)
+			if(direcao == Direction.RIGTH)
 				x++;
-			else if(direcao == Direcao.ESQUERDA)
+			else if(direcao == Direction.LEFT)
 				x--;
-			else if(direcao == Direcao.CIMA)
+			else if(direcao == Direction.UP)
 				y--;
-			else if(direcao == Direcao.BAIXO)
+			else if(direcao == Direction.DOWN)
 				y++;
-			else if(direcao == Direcao.BAIXO_DIREITA) {
+			else if(direcao == Direction.DOWN_RIGTH) {
 				y++;
 				x++;
 			}
-			else if(direcao == Direcao.BAIXO_ESQUERDA) {
+			else if(direcao == Direction.DOWN_LEFT) {
 				y++;
 				x--;
 			}
-			else if(direcao == Direcao.CIMA_DIREITA) {
+			else if(direcao == Direction.UP_RIGTH) {
 				y--;
 				x++;
 			}
-			else if(direcao == Direcao.CIMA_ESQUERDA) {
+			else if(direcao == Direction.UP_LEFT) {
 				y--;
 				x--;
 			}
@@ -235,26 +235,26 @@ public class Tabuleiro {
 		return configuracao;		
 	}
 
-	public TreeMap<Cor, Integer> calculaNumeroPecas() {
+	public TreeMap<Color, Integer> calculaNumeroPecas() {
 		
-		TreeMap<Cor, Integer> valores = new TreeMap<Cor, Integer>();
+		TreeMap<Color, Integer> valores = new TreeMap<Color, Integer>();
 		
 		Integer numeroPretas = 0;
 		Integer numeroBrancas = 0;
 		
 		for(int y=0 ; y<TAMANHO ; y++) {
 			for(int x=0 ; x<TAMANHO ; x++) {
-				Cor cor = this.tabuleiro[y][x];
+				Color cor = this.tabuleiro[y][x];
 				
-				if(cor == Cor.PRETO)
+				if(cor == Color.BLACK)
 					numeroPretas++;
-				else if(cor == Cor.BRANCO)
+				else if(cor == Color.WHITE)
 					numeroBrancas++;
 			}
 		}
 		
-		valores.put(Cor.PRETO, numeroPretas);
-		valores.put(Cor.BRANCO, numeroBrancas);
+		valores.put(Color.BLACK, numeroPretas);
+		valores.put(Color.WHITE, numeroBrancas);
 		
 		return valores;
 	}
@@ -265,7 +265,7 @@ public class Tabuleiro {
 		
 		for(int y=0 ; y<TAMANHO ; y++)
 			for(int x=0 ; x<TAMANHO ; x++)
-				if(this.tabuleiro[y][x] != Cor.VAZIO)
+				if(this.tabuleiro[y][x] != Color.BLANK)
 					numPecas++;
 		
 		return numPecas;
@@ -281,14 +281,14 @@ public class Tabuleiro {
 			for(int x=0 ; x<TAMANHO ; x++) {
 				char c = (char) buffer.read();
 
-				Cor cor;
+				Color cor;
 				
-				if(c == Cor.PRETO.getRepresentacao())
-					cor = Cor.PRETO;
-				else if(c == Cor.BRANCO.getRepresentacao())
-					cor = Cor.BRANCO;
+				if(c == Color.BLACK.getRepresentation())
+					cor = Color.BLACK;
+				else if(c == Color.WHITE.getRepresentation())
+					cor = Color.WHITE;
 				else
-					cor = Cor.VAZIO;
+					cor = Color.BLANK;
 						
 				tabuleiro.tabuleiro[y][x] = cor;
 			}
@@ -299,7 +299,7 @@ public class Tabuleiro {
 		return tabuleiro;
 	}
 	
-	public int calculaNumeroQuinas(Cor cor) {
+	public int calculaNumeroQuinas(Color cor) {
 		
 		int cont = 0;
 

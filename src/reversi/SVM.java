@@ -87,10 +87,10 @@ public class SVM {
 	    }
 	}
 	
-	public Jogada evaluatePositions(Cor color, InteligenciaArtificial IA,Map<Posicao,Double> movementsMade){
-		List<Jogada> possibleMoves = IA.tabuleiro.calculaJogadasPossiveisJogador(color);
+	public Jogada evaluatePositions(Color color, AI IA,Map<Posicao,Double> movementsMade){
+		List<Jogada> possibleMoves = IA.board.calculaJogadasPossiveisJogador(color);
 		FileWriter fw = null;
-		Nodo nodo = new Nodo(IA.tabuleiro,color);
+		Nodo nodo = new Nodo(IA.board,color);
 		BufferedWriter bw = null;
 		try {
 			fw = new FileWriter("PossibleMoves.dat");
@@ -104,7 +104,7 @@ public class SVM {
 		}
 		for(Jogada move : possibleMoves){
 			Nodo filho = new Nodo(nodo, move);
-			move.evalScore = IA.calculaFuncaoAvaliacaoDificil(filho.estado, color);
+			move.evalScore = IA.calculateLevelHardFunction(filho.estado, color);
 			try {
 				bw.write("1 ");
 			} catch (IOException e1) {
