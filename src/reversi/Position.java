@@ -1,11 +1,11 @@
 package reversi;
 
-public class Posicao {
+public class Position {
 	
 	public int y;	
 	public int x;
 	
-	public Posicao(int y, int x) {
+	public Position(int y, int x) {
 		this.x = x;
 		this.y = y;
 	}
@@ -23,7 +23,7 @@ public class Posicao {
 	@Override
 	public boolean equals(Object posicao) {
 		
-		Posicao pos = (Posicao) posicao;
+		Position pos = (Position) posicao;
 		
 		return (pos.y == this.y) && (pos.x == this.x); 
 	}

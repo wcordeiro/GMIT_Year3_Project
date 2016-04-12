@@ -69,8 +69,8 @@ public class SVM {
 		}
 	}
 	
-	public void archivePreparation(Jogada possiblePlay, Map<Posicao,Double> movementsMade){
-		for(Map.Entry<Posicao, Double> mapData : movementsMade.entrySet()) {
+	public void archivePreparation(Movement possiblePlay, Map<Position,Double> movementsMade){
+		for(Map.Entry<Position, Double> mapData : movementsMade.entrySet()) {
 			int letter = (mapData.getKey().x+97);
 		    String newLine = Character.toString ((char)(letter)) + "" + (mapData.getKey().y+1);
 		    if(dictionary.containsKey(newLine)){
@@ -79,18 +79,18 @@ public class SVM {
 		    }
 		    
 		}
-		int letter = possiblePlay.posicaoVazia.x + 97;
-		String newLine = Character.toString ((char)(letter)) + "" + (possiblePlay.posicaoVazia.y+1);
+		int letter = possiblePlay.emptyPosition.x + 97;
+		String newLine = Character.toString ((char)(letter)) + "" + (possiblePlay.emptyPosition.y+1);
 		if(dictionary.containsKey(newLine)){
 	    	Integer key = dictionary.get(newLine);
 	    	ascsortedMAP.put(key,possiblePlay.evalScore);
 	    }
 	}
 	
-	public Jogada evaluatePositions(Color color, AI IA,Map<Posicao,Double> movementsMade){
-		List<Jogada> possibleMoves = IA.board.calculaJogadasPossiveisJogador(color);
+	public Movement evaluatePositions(Color color, AI IA,Map<Position,Double> movementsMade){
+		List<Movement> possibleMoves = IA.board.calcultePossibleMovesByColor(color);
 		FileWriter fw = null;
-		Nodo nodo = new Nodo(IA.board,color);
+		Node nodo = new Node(IA.board,color);
 		BufferedWriter bw = null;
 		try {
 			fw = new FileWriter("PossibleMoves.dat");
@@ -102,9 +102,9 @@ public class SVM {
 		if(possibleMoves == null){
 			return null;
 		}
-		for(Jogada move : possibleMoves){
-			Nodo filho = new Nodo(nodo, move);
-			move.evalScore = IA.calculateLevelHardFunction(filho.estado, color);
+		for(Movement move : possibleMoves){
+			Node filho = new Node(nodo, move);
+			move.evalScore = IA.calculateLevelHardFunction(filho.board, color);
 			try {
 				bw.write("1 ");
 			} catch (IOException e1) {

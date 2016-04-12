@@ -10,20 +10,20 @@ public class AI {
   public Integer DEFAUTL_DEPTH = 5;
   public Integer MAX_DEPTH = DEFAUTL_DEPTH;
   public Color humanColor;
-  public Tabuleiro board;
+  public Board board;
   public String level;
-  Map<Posicao,Double> movementsMap = new HashMap<Posicao,Double>();
+  Map<Position,Double> movementsMap = new HashMap<Position,Double>();
   
-  private  boolean isStopCondition(Nodo nodo) {
-    return nodo.profundidade >= MAX_DEPTH;
+  private  boolean isStopCondition(Node nodo) {
+    return nodo.depth >= MAX_DEPTH;
   }
 
-  public  double calculateLevelHardFunction(Tabuleiro grid, Color my_color) {
+  public  double calculateLevelHardFunction(Board grid, Color my_color) {
     int my_tiles = 0, opp_tiles = 0, i, j, k, my_front_tiles = 0, opp_front_tiles = 0, x, y;
     double p = 0, c = 0, l = 0, m = 0, f = 0, d = 0;
     Color opp_color;
     opp_color = Color.getOpositeColor(my_color);
-    Posicao posicion = new Posicao(-1, -1);
+    Position posicion = new Position(-1, -1);
     int X1[] = {-1, -1, 0, 1, 1, 1, 0, -1};
     int Y1[] = {0, 1, 1, 1, 0, -1, -1, -1};
     int V[][] = {
@@ -80,105 +80,105 @@ public class AI {
     }
 // Corner occupancy
     my_tiles = opp_tiles = 0;
-    if (grid.getCor(new Posicao(0, 0)) == my_color) {
+    if (grid.getCor(new Position(0, 0)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(0, 0)) == opp_color) {
+    } else if (grid.getCor(new Position(0, 0)) == opp_color) {
       opp_tiles++;
     }
-    if (grid.getCor(new Posicao(0, 7)) == my_color) {
+    if (grid.getCor(new Position(0, 7)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(0, 7)) == opp_color) {
+    } else if (grid.getCor(new Position(0, 7)) == opp_color) {
       opp_tiles++;
     }
-    if (grid.getCor(new Posicao(7, 0)) == my_color) {
+    if (grid.getCor(new Position(7, 0)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(7, 0)) == opp_color) {
+    } else if (grid.getCor(new Position(7, 0)) == opp_color) {
       opp_tiles++;
     }
-    if (grid.getCor(new Posicao(7, 7)) == my_color) {
+    if (grid.getCor(new Position(7, 7)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(7, 7)) == opp_color) {
+    } else if (grid.getCor(new Position(7, 7)) == opp_color) {
       opp_tiles++;
     }
     c = 25 * (my_tiles - opp_tiles);
 // Corner closeness
     my_tiles = opp_tiles = 0;
-    if (grid.getCor(new Posicao(0, 0)) == Color.BLANK) {
-      if (grid.getCor(new Posicao(0, 1)) == my_color) {
+    if (grid.getCor(new Position(0, 0)) == Color.BLANK) {
+      if (grid.getCor(new Position(0, 1)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(0, 1)) == opp_color) {
+      } else if (grid.getCor(new Position(0, 1)) == opp_color) {
         opp_tiles++;
       }
-      if (grid.getCor(new Posicao(1, 1)) == my_color) {
+      if (grid.getCor(new Position(1, 1)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(1, 1)) == opp_color) {
+      } else if (grid.getCor(new Position(1, 1)) == opp_color) {
         opp_tiles++;
       }
-      if (grid.getCor(new Posicao(1, 0)) == my_color) {
+      if (grid.getCor(new Position(1, 0)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(1, 0)) == opp_color) {
-        opp_tiles++;
-      }
-    }
-    if (grid.getCor(new Posicao(0, 7)) == Color.BLANK) {
-      if (grid.getCor(new Posicao(0, 6)) == my_color) {
-        my_tiles++;
-      } else if (grid.getCor(new Posicao(0, 6)) == opp_color) {
-        opp_tiles++;
-      }
-      if (grid.getCor(new Posicao(1, 6)) == my_color) {
-        my_tiles++;
-      } else if (grid.getCor(new Posicao(1, 6)) == opp_color) {
-        opp_tiles++;
-      }
-      if (grid.getCor(new Posicao(1, 7)) == my_color) {
-        my_tiles++;
-      } else if (grid.getCor(new Posicao(1, 7)) == opp_color) {
+      } else if (grid.getCor(new Position(1, 0)) == opp_color) {
         opp_tiles++;
       }
     }
-    if (grid.getCor(new Posicao(7, 0)) == Color.BLANK) {
-      if (grid.getCor(new Posicao(7, 1)) == my_color) {
+    if (grid.getCor(new Position(0, 7)) == Color.BLANK) {
+      if (grid.getCor(new Position(0, 6)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(7, 1)) == opp_color) {
+      } else if (grid.getCor(new Position(0, 6)) == opp_color) {
         opp_tiles++;
       }
-      if (grid.getCor(new Posicao(6, 1)) == my_color) {
+      if (grid.getCor(new Position(1, 6)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(6, 1)) == opp_color) {
+      } else if (grid.getCor(new Position(1, 6)) == opp_color) {
         opp_tiles++;
       }
-      if (grid.getCor(new Posicao(6, 0)) == my_color) {
+      if (grid.getCor(new Position(1, 7)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(6, 0)) == opp_color) {
+      } else if (grid.getCor(new Position(1, 7)) == opp_color) {
         opp_tiles++;
       }
     }
-    if (grid.getCor(new Posicao(7, 7)) == Color.BLANK) {
-      if (grid.getCor(new Posicao(6, 7)) == my_color) {
+    if (grid.getCor(new Position(7, 0)) == Color.BLANK) {
+      if (grid.getCor(new Position(7, 1)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(6, 7)) == opp_color) {
+      } else if (grid.getCor(new Position(7, 1)) == opp_color) {
         opp_tiles++;
       }
-      if (grid.getCor(new Posicao(6, 6)) == my_color) {
+      if (grid.getCor(new Position(6, 1)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(6, 6)) == opp_color) {
+      } else if (grid.getCor(new Position(6, 1)) == opp_color) {
         opp_tiles++;
       }
-      if (grid.getCor(new Posicao(7, 6)) == my_color) {
+      if (grid.getCor(new Position(6, 0)) == my_color) {
         my_tiles++;
-      } else if (grid.getCor(new Posicao(7, 6)) == opp_color) {
+      } else if (grid.getCor(new Position(6, 0)) == opp_color) {
+        opp_tiles++;
+      }
+    }
+    if (grid.getCor(new Position(7, 7)) == Color.BLANK) {
+      if (grid.getCor(new Position(6, 7)) == my_color) {
+        my_tiles++;
+      } else if (grid.getCor(new Position(6, 7)) == opp_color) {
+        opp_tiles++;
+      }
+      if (grid.getCor(new Position(6, 6)) == my_color) {
+        my_tiles++;
+      } else if (grid.getCor(new Position(6, 6)) == opp_color) {
+        opp_tiles++;
+      }
+      if (grid.getCor(new Position(7, 6)) == my_color) {
+        my_tiles++;
+      } else if (grid.getCor(new Position(7, 6)) == opp_color) {
         opp_tiles++;
       }
     }
     l = -12.5 * (my_tiles - opp_tiles);
 // Mobility
-    List<Jogada> possibleMoves = grid.calculaJogadasPossiveisJogador(my_color);
+    List<Movement> possibleMoves = grid.calcultePossibleMovesByColor(my_color);
     my_tiles = opp_tiles = 0;
     if (possibleMoves != null) {
       my_tiles = possibleMoves.size();
     }
-    possibleMoves = grid.calculaJogadasPossiveisJogador(opp_color);
+    possibleMoves = grid.calcultePossibleMovesByColor(opp_color);
     if (possibleMoves != null) {
       opp_tiles = possibleMoves.size();
     }
@@ -194,12 +194,12 @@ public class AI {
     return score;
   }
 
-  private  double calculateLevelMediumFunction(Tabuleiro grid, Color my_color) {
+  private  double calculateLevelMediumFunction(Board grid, Color my_color) {
     int my_tiles = 0, opp_tiles = 0, i, j, k, my_front_tiles = 0, opp_front_tiles = 0, x, y;
     double p = 0, c = 0, l = 0, f = 0, d = 0;
     Color opp_color;
     opp_color = Color.getOpositeColor(my_color);
-    Posicao position = new Posicao(-1, -1);
+    Position position = new Position(-1, -1);
     int X1[] = {-1, -1, 0, 1, 1, 1, 0, -1};
     int Y1[] = {0, 1, 1, 1, 0, -1, -1, -1};
     int V[][] = {
@@ -256,24 +256,24 @@ public class AI {
     }
 // Corner occupancy
     my_tiles = opp_tiles = 0;
-    if (grid.getCor(new Posicao(0, 0)) == my_color) {
+    if (grid.getCor(new Position(0, 0)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(0, 0)) == opp_color) {
+    } else if (grid.getCor(new Position(0, 0)) == opp_color) {
       opp_tiles++;
     }
-    if (grid.getCor(new Posicao(0, 7)) == my_color) {
+    if (grid.getCor(new Position(0, 7)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(0, 7)) == opp_color) {
+    } else if (grid.getCor(new Position(0, 7)) == opp_color) {
       opp_tiles++;
     }
-    if (grid.getCor(new Posicao(7, 0)) == my_color) {
+    if (grid.getCor(new Position(7, 0)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(7, 0)) == opp_color) {
+    } else if (grid.getCor(new Position(7, 0)) == opp_color) {
       opp_tiles++;
     }
-    if (grid.getCor(new Posicao(7, 7)) == my_color) {
+    if (grid.getCor(new Position(7, 7)) == my_color) {
       my_tiles++;
-    } else if (grid.getCor(new Posicao(7, 7)) == opp_color) {
+    } else if (grid.getCor(new Position(7, 7)) == opp_color) {
       opp_tiles++;
     }
     c = 25 * (my_tiles - opp_tiles);
@@ -282,14 +282,14 @@ public class AI {
     return score;
   }
 
-  private  Double calculateLevelEasyFunction(Tabuleiro board, Color color) {
+  private  Double calculateLevelEasyFunction(Board board, Color color) {
 
     // Calcula o número de peças do jogador no tabuleiro.
     Integer tilesNumber = 0;
-    Posicao position = new Posicao(-1, -1);
+    Position position = new Position(-1, -1);
 
-    for (int y = 0; y < Tabuleiro.TAMANHO; y++) {
-      for (int x = 0; x < Tabuleiro.TAMANHO; x++) {
+    for (int y = 0; y < Board.SIZE; y++) {
+      for (int x = 0; x < Board.SIZE; x++) {
         position.y = y;
         position.x = x;
 
@@ -300,54 +300,54 @@ public class AI {
     }
 
     // Peças seguras
-    Integer cornerNumber = board.calculaNumeroQuinas(color);
+    Integer cornerNumber = board.calculateBoardersNumber(color);
     Double result = (tilesNumber.doubleValue() + cornerNumber.doubleValue());
     return result;
   }
 
-  private  boolean shouldPrune(Nodo node) {
+  private  boolean shouldPrune(Node node) {
 
-    Color color = node.corJogador;
+    Color color = node.playerColor;
     Color oppositeColor = Color.getOpositeColor(color);
-    Nodo checking = node.antecessor;
+    Node checking = node.predecessor;
 
     /* Caminha par cima na árvore para verificar se pode realizar a poda.*/
     while (checking != null) {
 
       if (checking.fnAvaliacao != null) {
-        if (checking.corJogador == oppositeColor) {
+        if (checking.playerColor == oppositeColor) {
           if (checking.fnAvaliacao(oppositeColor) > node.fnAvaliacao(oppositeColor)) {
             return true;
           }
         }
       }
 
-      checking = checking.antecessor;
+      checking = checking.predecessor;
     }
 
     return false;
   }
 
-  private  void setLevel(Nodo node) {
+  private  void setLevel(Node node) {
     node.fnAvaliacao = new Double[2];
     if (level.equals("1")) {
-      node.fnAvaliacao[0] = calculateLevelEasyFunction(node.estado, Color.BLACK);
-      node.fnAvaliacao[1] = calculateLevelEasyFunction(node.estado, Color.WHITE);
+      node.fnAvaliacao[0] = calculateLevelEasyFunction(node.board, Color.BLACK);
+      node.fnAvaliacao[1] = calculateLevelEasyFunction(node.board, Color.WHITE);
     } else if (level.equals("2")) {
-      node.fnAvaliacao[0] = calculateLevelMediumFunction(node.estado, Color.BLACK);
-      node.fnAvaliacao[1] = calculateLevelMediumFunction(node.estado, Color.WHITE);
+      node.fnAvaliacao[0] = calculateLevelMediumFunction(node.board, Color.BLACK);
+      node.fnAvaliacao[1] = calculateLevelMediumFunction(node.board, Color.WHITE);
     } else {
-      node.fnAvaliacao[0] = calculateLevelHardFunction(node.estado, Color.BLACK);
-      node.fnAvaliacao[1] = calculateLevelHardFunction(node.estado, Color.WHITE);
+      node.fnAvaliacao[0] = calculateLevelHardFunction(node.board, Color.BLACK);
+      node.fnAvaliacao[1] = calculateLevelHardFunction(node.board, Color.WHITE);
     }
   }
 
-  private  Jogada calculateMoveMinMaxPodaAB(Nodo node) {
+  private  Movement calculateMoveMinMaxPodaAB(Node node) {
 
-    Jogada bestPlay = null;
+    Movement bestPlay = null;
 
-    Color color = node.corJogador;
-    Tabuleiro estate = node.estado;
+    Color color = node.playerColor;
+    Board estate = node.board;
 
     // Atingiu profundidade maxima.
     if (isStopCondition(node)) {
@@ -357,14 +357,14 @@ public class AI {
 
     // Percorre todas as posicoes vazias em busca de jogadas(Nodos filhos).
     int kidsNumber = 0;
-    for (Posicao emptySpot : estate.getPosicoesVazias()) {
+    for (Position emptySpot : estate.getEmptySpots()) {
 
-      Jogada play = estate.calculaJogada(emptySpot, color);
+      Movement play = estate.calcuteMove(emptySpot, color);
 
       // Se tem jogada pela pos. vazia então expande para esse nodo filho.
       if (play != null) {
 
-        Nodo son = new Nodo(node, play);
+        Node son = new Node(node, play);
 
         // Caminha em profundidade na árvore.
         calculateMoveMinMaxPodaAB(son);
@@ -375,7 +375,7 @@ public class AI {
                 || son.fnAvaliacao(color) > node.fnAvaliacao(color)) {
           node.fnAvaliacao = son.fnAvaliacao;
           bestPlay = play;
-          bestPlay.evalScore = this.calculateLevelHardFunction(node.estado, color);
+          bestPlay.evalScore = this.calculateLevelHardFunction(node.board, color);
         }
 
         // Poda. Se sim, para de buscar nodos filhos.
@@ -396,13 +396,13 @@ public class AI {
     return bestPlay;
   }
 
-  public Jogada play(Tabuleiro board, Color color) {    
-    Jogada bestPlay;
-    Nodo root = new Nodo(board, color);
+  public Movement play(Board board, Color color) {    
+    Movement bestPlay;
+    Node root = new Node(board, color);
 
-    int tilesNumber = board.calculaTotalPecas();
+    int tilesNumber = board.calculteNumberTiles();
     double percentageDone
-            = ((double) tilesNumber) / ((double) Tabuleiro.TAMANHO * Tabuleiro.TAMANHO);
+            = ((double) tilesNumber) / ((double) Board.SIZE * Board.SIZE);
 
     if (percentageDone <= 0.6) {
       MAX_DEPTH = DEFAUTL_DEPTH;
@@ -412,7 +412,7 @@ public class AI {
 
     bestPlay = calculateMoveMinMaxPodaAB(root);
     if(bestPlay != null)
-    	movementsMap.put(bestPlay.posicaoVazia, bestPlay.evalScore);
+    	movementsMap.put(bestPlay.emptyPosition, bestPlay.evalScore);
     return bestPlay;
   }
   
