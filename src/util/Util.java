@@ -4,25 +4,25 @@ import java.util.Scanner;
 
 public class Util {
 
-	public static int leInteiro(int min, int max) {
+	public static int readInteger(int min, int max) {
 		
 		Scanner scanner = new Scanner(System.in);
-		String valorLido;
-		int valorInteiro = -1;
+		String valueReaded;
+		int value = -1;
 		
-		while(valorInteiro < min || valorInteiro > max) {
+		while(value < min || value > max) {
 
 			// Lê a linha que o usuario entrou.
-			valorLido = scanner.nextLine();
+			valueReaded = scanner.nextLine();
 
-			if (Util.isInteger(valorLido))
-				valorInteiro = Integer.parseInt(valorLido);
+			if (Util.isInteger(valueReaded))
+				value = Integer.parseInt(valueReaded);
 		}
 		
-		return valorInteiro;
+		return value;
 	}
 	
-	public static void leTecla() {
+	public static void readKey() {
 		
 		Scanner scanner = new Scanner(System.in);
 		scanner.nextLine();
@@ -39,7 +39,7 @@ public class Util {
 	    return true;
 	}
 	
-	public static void separador() {
+	public static void separator() {
 		System.out.println("-------------------------");
 	}
 }

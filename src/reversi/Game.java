@@ -52,7 +52,7 @@ public class Game {
     }
 
   }
-  private AI IA;
+  private AI artificialInteligence;
   private Stack boardStack;
   private Board board;
   private JPanel frame;
@@ -69,181 +69,156 @@ public class Game {
   private Boolean isWainting;
 
   private void playAgainstHuman() {
-    String option = JOptionPane.showInputDialog("Escolha uma cor (" + IA.BEGGINER_COLOR.name() + " começa):\n"
+    String option = JOptionPane.showInputDialog("Escolha uma cor (" + artificialInteligence.BEGGINER_COLOR.name() + " começa):\n"
             + "1 - Preto\n2 - Branco");
-    IA.level = JOptionPane.showInputDialog("Escolha uma dificuldade:\n"
+    artificialInteligence.level = JOptionPane.showInputDialog("Escolha uma dificuldade:\n"
             + "1 - Facil\n2 - Medio\n3 - Dificil");
 
-    if (IA.level.equals("1")) {
-      IA.DEFAUTL_DEPTH = 5;
-    } else if (IA.level.equals("2")) {
-      IA.DEFAUTL_DEPTH = 5;
+    if (artificialInteligence.level.equals("1")) {
+      artificialInteligence.DEFAUTL_DEPTH = 5;
+    } else if (artificialInteligence.level.equals("2")) {
+      artificialInteligence.DEFAUTL_DEPTH = 5;
     } else {
-      IA.DEFAUTL_DEPTH = 6;
+      artificialInteligence.DEFAUTL_DEPTH = 6;
     }
 
     if (option.equals("1")) {
-      IA.humanColor = Color.BLACK;
+      artificialInteligence.humanColor = Color.BLACK;
     } else if (option.equals("2")) {
-      IA.humanColor = Color.WHITE;
+      artificialInteligence.humanColor = Color.WHITE;
     } else {
-      IA.humanColor = Color.BLACK;
+      artificialInteligence.humanColor = Color.BLACK;
     }
 
     // -------------------------------------
-    IA.board = new Board();
-    List<Movement> jogadas = IA.board.calcultePossibleMovesByColor(IA.humanColor);
+    artificialInteligence.board = new Board();
+    List<Movement> movements = artificialInteligence.board.calcultePossibleMovesByColor(artificialInteligence.humanColor);
     for (int i = 0; i < B.length; i++) {
       for (int j = 0; j < B[i].length; j++) {
-        if (IA.board.getCor(new Position(i, j)) == Color.BLACK) {
+        if (artificialInteligence.board.getCor(new Position(i, j)) == Color.BLACK) {
           B[i][j].setIcon(new ImageIcon("black.png"));
-        } else if (IA.board.getCor(new Position(i, j)) == Color.WHITE) {
+        } else if (artificialInteligence.board.getCor(new Position(i, j)) == Color.WHITE) {
           B[i][j].setIcon(new ImageIcon("white.png"));
         } else {
           B[i][j].setIcon(new ImageIcon("none.png"));
         }
-        if (jogadas != null) {
-          for (Movement jogada : jogadas) {
-            if (jogada.getEmptyPosition().x == j && jogada.getEmptyPosition().y == i) {
+        if (movements != null) {
+          for (Movement move : movements) {
+            if (move.getEmptyPosition().x == j && move.getEmptyPosition().y == i) {
               B[i][j].setIcon(new ImageIcon("green.png"));
             }
           }
         }
       }
     }
-    Color corDaVez = IA.BEGGINER_COLOR;
-    Movement jogada = null;
+    Color turnColor = artificialInteligence.BEGGINER_COLOR;
+    Movement move = null;
 
     while (true) {
 
-      TreeMap<Color, List<Movement>> jogadasPossiveis
+      TreeMap<Color, List<Movement>> possibleMoves
               = new TreeMap<Color, List<Movement>>();
 
-      jogadasPossiveis.put(
+      possibleMoves.put(
               Color.BLACK,
-              IA.board.calcultePossibleMovesByColor(Color.BLACK)
+              artificialInteligence.board.calcultePossibleMovesByColor(Color.BLACK)
       );
 
-      jogadasPossiveis.put(
+      possibleMoves.put(
               Color.WHITE,
-              IA.board.calcultePossibleMovesByColor(Color.WHITE)
+              artificialInteligence.board.calcultePossibleMovesByColor(Color.WHITE)
       );
 
-      if (jogadasPossiveis.get(Color.BLACK) == null
-              && jogadasPossiveis.get(Color.WHITE) == null) {
+      if (possibleMoves.get(Color.BLACK) == null
+              && possibleMoves.get(Color.WHITE) == null) {
         break;
       }
 
-      if (corDaVez == IA.humanColor && jogadasPossiveis.get(corDaVez) != null) {
+      if (turnColor == artificialInteligence.humanColor && possibleMoves.get(turnColor) != null) {
 
         do {
-          int x = Util.leInteiro(0, Board.SIZE - 1);
-          int y = Util.leInteiro(0, Board.SIZE - 1);
+          int x = Util.readInteger(0, Board.SIZE - 1);
+          int y = Util.readInteger(0, Board.SIZE - 1);
           
           System.out.println(x+""+y);
 
-          jogada = IA.board.calcuteMove(new Position(y, x), corDaVez);
+          move = artificialInteligence.board.calcuteMove(new Position(y, x), turnColor);
 
-          if (jogada == null)
+          if (move == null)
 						;
 
-        } while (jogada == null);
-      } else if (jogadasPossiveis.get(corDaVez) != null) {
+        } while (move == null);
+      } else if (possibleMoves.get(turnColor) != null) {
 
         long tempoInicio = System.currentTimeMillis();
 
-        jogada = IA.play(IA.board, corDaVez);
+        move = artificialInteligence.play(artificialInteligence.board, turnColor);
 
         long tempoFinal = System.currentTimeMillis() - tempoInicio;
         Double segundos = ((double) tempoFinal) / 1000;
 
       }
 
-      if (jogada != null) {                
-        IA.board.executeMovement(jogada);
+      if (move != null) {                
+        artificialInteligence.board.executeMovement(move);
       }
 
-      corDaVez = Color.getOpositeColor(corDaVez);
-      printBoard(corDaVez);
+      turnColor = Color.getOpositeColor(turnColor);
+      printBoard(turnColor);
     }
     
   }
   
-  public void playAgaintAI(int k) throws IOException{
-	//  IA.dificuldade = "3";
-/*	  if(k < 10){
-		  IA.dificuldade = "3";
-		  IA.PROFUNDIDADE_PADRAO = 1;
-	  }
-	  else if(k < 20){
-		  IA.dificuldade = "3";
-		  IA.PROFUNDIDADE_PADRAO = 2;
-	  }
-	  else if(k < 30){
-		  IA.dificuldade = "3";
-		  IA.PROFUNDIDADE_PADRAO = 3;
-	  }
-	  else if(k < 40){
-		  IA.dificuldade = "3";
-		  IA.PROFUNDIDADE_PADRAO = 4;
-	  }
-	  else if(k < 50){
-		  IA.dificuldade = "3";
-		  IA.PROFUNDIDADE_PADRAO = 5;
-	  }
-	  else if(k < 60){
-		  IA.dificuldade = "3";
-		  IA.PROFUNDIDADE_PADRAO = 6;
-	  }*/
-	  IA.level = "3";
-	  IA.DEFAUTL_DEPTH = 1;
-	  IA.humanColor = Color.WHITE;
+  public void playAgainstAI(int k) throws IOException{
+	  artificialInteligence.level = "3";
+	  artificialInteligence.DEFAUTL_DEPTH = 1;
+	  artificialInteligence.humanColor = Color.WHITE;
 	  Map<Position,Double> movementsMap = new HashMap<Position,Double>();
 	  SVM svm = new SVM();
 	  
 	  FileWriter fw = new FileWriter("teste.txt",true );
 	  BufferedWriter bw = new BufferedWriter( fw );
 	  
-	  IA.board = new Board();
-	    List<Movement> jogadas = IA.board.calcultePossibleMovesByColor(IA.humanColor);
+	  artificialInteligence.board = new Board();
+	    List<Movement> movements = artificialInteligence.board.calcultePossibleMovesByColor(artificialInteligence.humanColor);
 	    for (int i = 0; i < B.length; i++) {
 	      for (int j = 0; j < B[i].length; j++) {
-	        if (IA.board.getCor(new Position(i, j)) == Color.BLACK) {
+	        if (artificialInteligence.board.getCor(new Position(i, j)) == Color.BLACK) {
 	          B[i][j].setIcon(new ImageIcon("black.png"));
-	        } else if (IA.board.getCor(new Position(i, j)) == Color.WHITE) {
+	        } else if (artificialInteligence.board.getCor(new Position(i, j)) == Color.WHITE) {
 	          B[i][j].setIcon(new ImageIcon("white.png"));
 	        } else {
 	          B[i][j].setIcon(new ImageIcon("none.png"));
 	        }
-	        if (jogadas != null) {
-	          for (Movement jogada : jogadas) {
-	            if (jogada.getEmptyPosition().x == j && jogada.getEmptyPosition().y == i) {
+	        if (movements != null) {
+	          for (Movement move : movements) {
+	            if (move.getEmptyPosition().x == j && move.getEmptyPosition().y == i) {
 	              B[i][j].setIcon(new ImageIcon("green.png"));
 	            }
 	          }
 	        }
 	      }
 	    }
-	    Color corDaVez = IA.BEGGINER_COLOR;
-	    Movement jogada = null;
+	    Color turnColor = artificialInteligence.BEGGINER_COLOR;
+	    Movement move = null;
 
 	    while (true) {
 
-	      TreeMap<Color, List<Movement>> jogadasPossiveis
+	      TreeMap<Color, List<Movement>> possibleMoviments
 	              = new TreeMap<Color, List<Movement>>();
 
-	      jogadasPossiveis.put(
+	      possibleMoviments.put(
 	              Color.BLACK,
-	              IA.board.calcultePossibleMovesByColor(Color.BLACK)
+	              artificialInteligence.board.calcultePossibleMovesByColor(Color.BLACK)
 	      );
 
-	      jogadasPossiveis.put(
+	      possibleMoviments.put(
 	              Color.WHITE,
-	              IA.board.calcultePossibleMovesByColor(Color.WHITE)
+	              artificialInteligence.board.calcultePossibleMovesByColor(Color.WHITE)
 	      );
 
-	      if (jogadasPossiveis.get(Color.BLACK) == null
-	              && jogadasPossiveis.get(Color.WHITE) == null) {
+	      if (possibleMoviments.get(Color.BLACK) == null
+	              && possibleMoviments.get(Color.WHITE) == null) {
 	    	  FileReader fr = null;
 	    	  FileWriter fwF = null;
 	    	  BufferedWriter bwF = null;
@@ -255,7 +230,7 @@ public class Game {
 	    	  fr.close();
 	    	  br.close();
 	    	  Integer index = 1;
-	    	  TreeMap<Color, Integer> numPecas = IA.board.calculateNumberTiles();
+	    	  TreeMap<Color, Integer> numPecas = artificialInteligence.board.calculateNumberTiles();
 	    	  Integer numPretas = numPecas.get(Color.BLACK);
 	  	      Integer numBrancas = numPecas.get(Color.WHITE);
 	  	      if(numPretas < numBrancas){
@@ -293,37 +268,37 @@ public class Game {
 	    	  fwF.close();
 	    	  break;
 	      }
-	      if(corDaVez == Color.BLACK){
+	      if(turnColor == Color.BLACK){
 	    	//  jogada = IA.play(IA.tabuleiro, corDaVez);
 	    	  Random rand = new Random();
 	    	  try{
-	    		  if(jogadasPossiveis.get(corDaVez) == null){
-	    			  jogada=null;
+	    		  if(possibleMoviments.get(turnColor) == null){
+	    			  move=null;
 	    		  }
-	    		  else if(jogadasPossiveis.get(corDaVez).size() == 0){
-	    			  jogada=null;
+	    		  else if(possibleMoviments.get(turnColor).size() == 0){
+	    			  move=null;
 	    		  }
-	    		  else if (jogadasPossiveis.get(corDaVez).size() == 1){
-	    			  jogada = jogadasPossiveis.get(corDaVez).get(0);
+	    		  else if (possibleMoviments.get(turnColor).size() == 1){
+	    			  move = possibleMoviments.get(turnColor).get(0);
 	    		  }
 	    		  else{
-	    			  jogada = jogadasPossiveis.get(corDaVez).get(rand.nextInt(jogadasPossiveis.get(corDaVez).size() - 1));
+	    			  move = possibleMoviments.get(turnColor).get(rand.nextInt(possibleMoviments.get(turnColor).size() - 1));
 	    		  }
 	    	  } 	  
 	    	  catch (Exception e){
-	    		jogada = null;
+	    		move = null;
 	    	  }
-	    	  jogada = IA.play(IA.board, corDaVez);
+	    	  move = artificialInteligence.play(artificialInteligence.board, turnColor);
 	      }
 	      else
-	    	  jogada = svm.evaluatePositions(corDaVez, IA,movementsMap);
+	    	  move = svm.evaluatePositions(turnColor, artificialInteligence,movementsMap);
 	      
-	      if (jogada != null) {                
-	          IA.board.executeMovement(jogada);
-	          Node nodo = new Node(IA.board,corDaVez);
-	          Node filho = new Node(nodo, jogada);
-	          jogada.evalScore = IA.calculateLevelHardFunction(filho.board, corDaVez);
-	          movementsMap.put(jogada.emptyPosition, jogada.evalScore);
+	      if (move != null) {                
+	          artificialInteligence.board.executeMovement(move);
+	          Node node = new Node(artificialInteligence.board,turnColor);
+	          Node child = new Node(node, move);
+	          move.evalScore = artificialInteligence.calculateLevelHardFunction(child.board, turnColor);
+	          movementsMap.put(move.emptyPosition, move.evalScore);
 	       //   if(corDaVez == Cor.BRANCO)
 	       // 	  bw.write("+" + jogada.posicaoVazia.x + jogada.posicaoVazia.y);
 	       //   else
@@ -333,8 +308,8 @@ public class Game {
 	      
 	      
 
-	        corDaVez = Color.getOpositeColor(corDaVez);
-	        printBoard(corDaVez);
+	        turnColor = Color.getOpositeColor(turnColor);
+	        printBoard(turnColor);
 	    /*    try {
 				Thread.currentThread().sleep(100);
 			} catch (InterruptedException e) {
@@ -343,7 +318,7 @@ public class Game {
 			}*/
 	      
 	    }
-	    TreeMap<Color, Integer> numPecas = IA.board.calculateNumberTiles();
+	    TreeMap<Color, Integer> numPecas = artificialInteligence.board.calculateNumberTiles();
 
 	    Integer numPretas = numPecas.get(Color.BLACK);
 	    Integer numBrancas = numPecas.get(Color.WHITE);
@@ -353,15 +328,85 @@ public class Game {
 	    fw.close();
 	  
   }
+  
+  public void playAgainstReinforcement() throws IOException{
+	  artificialInteligence.level = "3";
+	  artificialInteligence.DEFAUTL_DEPTH = 1;
+	  ReinforcementLearner player = new ReinforcementLearner(artificialInteligence,Color.WHITE);
+	  Map<Position,Double> movementsMap = new HashMap<Position,Double>();	  
+	  
+	  artificialInteligence.board = new Board();
+	    List<Movement> movements = artificialInteligence.board.calcultePossibleMovesByColor(artificialInteligence.humanColor);
+	    for (int i = 0; i < B.length; i++) {
+	      for (int j = 0; j < B[i].length; j++) {
+	        if (artificialInteligence.board.getCor(new Position(i, j)) == Color.BLACK) {
+	          B[i][j].setIcon(new ImageIcon("black.png"));
+	        } else if (artificialInteligence.board.getCor(new Position(i, j)) == Color.WHITE) {
+	          B[i][j].setIcon(new ImageIcon("white.png"));
+	        } else {
+	          B[i][j].setIcon(new ImageIcon("none.png"));
+	        }
+	        if (movements != null) {
+	          for (Movement move : movements) {
+	            if (move.getEmptyPosition().x == j && move.getEmptyPosition().y == i) {
+	              B[i][j].setIcon(new ImageIcon("green.png"));
+	            }
+	          }
+	        }
+	      }
+	    }
+	    Color turnColor = artificialInteligence.BEGGINER_COLOR;
+	    Movement move = null;
+
+	    while (true) {
+
+	      TreeMap<Color, List<Movement>> possibleMoves
+	              = new TreeMap<Color, List<Movement>>();
+
+	      possibleMoves.put(
+	              Color.BLACK,
+	              artificialInteligence.board.calcultePossibleMovesByColor(Color.BLACK)
+	      );
+
+	      possibleMoves.put(
+	              Color.WHITE,
+	              artificialInteligence.board.calcultePossibleMovesByColor(Color.WHITE)
+	      );
+
+	      if (possibleMoves.get(Color.BLACK) == null
+	              && possibleMoves.get(Color.WHITE) == null) {
+	    	  break;
+	      }
+	      if(turnColor == Color.BLACK){
+	    	  move = artificialInteligence.play(artificialInteligence.board, turnColor);
+	      }
+	      else
+	    	  move = player.findMove();
+	      
+	      if (move != null) {                
+	          artificialInteligence.board.executeMovement(move);
+	      }
+	      
+
+	        turnColor = Color.getOpositeColor(turnColor);
+	        printBoard(turnColor);
+	      
+	    }
+	    TreeMap<Color, Integer> numPecas = artificialInteligence.board.calculateNumberTiles();
+
+	   // Integer numPretas = numPecas.get(Color.BLACK);
+	   // Integer numBrancas = numPecas.get(Color.WHITE);
+	  
+  }
 
   public void printBoard(Color color) {
-    List<Movement> possibleColor = IA.board.calcultePossibleMovesByColor(color);
+    List<Movement> possibleColor = artificialInteligence.board.calcultePossibleMovesByColor(color);
     for (int i = 0; i < B.length; i++) {
       for (int j = 0; j < B[i].length; j++) {
     	  
-        if (IA.board.getCor(new Position(i, j)) == Color.BLACK) {
+        if (artificialInteligence.board.getCor(new Position(i, j)) == Color.BLACK) {
           B[i][j].setIcon(new ImageIcon("black.png"));
-        } else if (IA.board.getCor(new Position(i, j)) == Color.WHITE) {
+        } else if (artificialInteligence.board.getCor(new Position(i, j)) == Color.WHITE) {
           B[i][j].setIcon(new ImageIcon("white.png"));
         } else {
           B[i][j].setIcon(new ImageIcon("none.png"));
@@ -375,7 +420,7 @@ public class Game {
         }
       }
     }
-    TreeMap<Color, Integer> numberTiles = IA.board.calculateNumberTiles();
+    TreeMap<Color, Integer> numberTiles = artificialInteligence.board.calculateNumberTiles();
 
     Integer numPretas = numberTiles.get(Color.BLACK);
     Integer numBrancas = numberTiles.get(Color.WHITE);
@@ -392,19 +437,19 @@ public class Game {
         public Void doInBackground() {
           if(isWainting) 
             return null;
-          board = IA.board.clone();         
+          board = artificialInteligence.board.clone();         
           boardStack.push(board);
           for (int i = 0; i < B.length; i++) {
             for (int j = 0; j < B[i].length; j++) {
               if (e.getSource() == B[i][j]) {
-                Movement jogada = IA.board.calcuteMove(new Position(i, j), IA.humanColor);
+                Movement move = artificialInteligence.board.calcuteMove(new Position(i, j), artificialInteligence.humanColor);
                 try {
-                  IA.board.executeMovement(jogada);
+                  artificialInteligence.board.executeMovement(move);
                   isWainting = true;                  
-                  printBoard(Color.getOpositeColor(IA.humanColor));
-                  Movement play = IA.play(IA.board, Color.getOpositeColor(IA.humanColor));                  
+                  printBoard(Color.getOpositeColor(artificialInteligence.humanColor));
+                  Movement play = artificialInteligence.play(artificialInteligence.board, Color.getOpositeColor(artificialInteligence.humanColor));                  
                   if (play != null) {                    
-                    IA.board.executeMovement(play);                    
+                    artificialInteligence.board.executeMovement(play);                    
                   }
                   try {
                     Thread.sleep(1000);                 //1000 milliseconds is one second.
@@ -412,41 +457,41 @@ public class Game {
                     Thread.currentThread().interrupt();
                   }
                   isWainting = false;
-                  printBoard(IA.humanColor);
-                  TreeMap<Color, List<Movement>> jogadasPossiveis
+                  printBoard(artificialInteligence.humanColor);
+                  TreeMap<Color, List<Movement>> possibleMoves
                           = new TreeMap<Color, List<Movement>>();
 
-                  jogadasPossiveis.put(
+                  possibleMoves.put(
                           Color.BLACK,
-                          IA.board.calcultePossibleMovesByColor(Color.BLACK)
+                          artificialInteligence.board.calcultePossibleMovesByColor(Color.BLACK)
                   );
 
-                  jogadasPossiveis.put(
+                  possibleMoves.put(
                           Color.WHITE,
-                          IA.board.calcultePossibleMovesByColor(Color.WHITE)
+                          artificialInteligence.board.calcultePossibleMovesByColor(Color.WHITE)
                   );
-                  while (jogadasPossiveis.get(IA.humanColor) == null && jogadasPossiveis.get(Color.getOpositeColor(IA.humanColor)) != null) {
-                    play = IA.play(IA.board, Color.getOpositeColor(IA.humanColor));
+                  while (possibleMoves.get(artificialInteligence.humanColor) == null && possibleMoves.get(Color.getOpositeColor(artificialInteligence.humanColor)) != null) {
+                    play = artificialInteligence.play(artificialInteligence.board, Color.getOpositeColor(artificialInteligence.humanColor));
                     if (play != null) {
 //                      t = IA.tabuleiro.clone();         
 //                      pilhaTabuleiros.push(t);
-                      IA.board.executeMovement(play);
+                      artificialInteligence.board.executeMovement(play);
                     }
-                    printBoard(IA.humanColor);
+                    printBoard(artificialInteligence.humanColor);
                     frame.repaint();
-                    jogadasPossiveis.put(
+                    possibleMoves.put(
                             Color.BLACK,
-                            IA.board.calcultePossibleMovesByColor(Color.BLACK)
+                            artificialInteligence.board.calcultePossibleMovesByColor(Color.BLACK)
                     );
 
-                    jogadasPossiveis.put(
+                    possibleMoves.put(
                             Color.WHITE,
-                            IA.board.calcultePossibleMovesByColor(Color.WHITE)
+                            artificialInteligence.board.calcultePossibleMovesByColor(Color.WHITE)
                     );
                   }
-                  if (jogadasPossiveis.get(Color.BLACK) == null
-                          && jogadasPossiveis.get(Color.WHITE) == null) {
-                    TreeMap<Color, Integer> numPecas = IA.board.calculateNumberTiles();
+                  if (possibleMoves.get(Color.BLACK) == null
+                          && possibleMoves.get(Color.WHITE) == null) {
+                    TreeMap<Color, Integer> numPecas = artificialInteligence.board.calculateNumberTiles();
                     Integer numPretas = numPecas.get(Color.BLACK);
                     Integer numBrancas = numPecas.get(Color.WHITE);
                     String msg = "Placar:\nPretas: " + numPretas + "\nBrancas: " + numBrancas;
@@ -486,8 +531,8 @@ public class Game {
           JOptionPane.showMessageDialog(bigger_frame, "Não existem mais movimentos para desfazer.");
         }
         else{
-          IA.board = (Board) boardStack.pop();          
-          printBoard(IA.humanColor);
+          artificialInteligence.board = (Board) boardStack.pop();          
+          printBoard(artificialInteligence.humanColor);
         }
       }
     }
@@ -496,7 +541,7 @@ public class Game {
   public void startGame(int k) {
     boardStack = new Stack();
     isWainting = false;
-    IA = new AI();
+    artificialInteligence = new AI();
     bigger_frame = new JFrame("Reversi");
     bigger_frame.setSize(800,900);
     bigger_frame.setLayout(new BorderLayout());
@@ -559,7 +604,12 @@ public class Game {
 //    bigger_frame.pack();
     bigger_frame.setVisible(true);
 
-    playAgainstHuman();
+    try {
+		this.playAgainstReinforcement();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     /*
     try {
 	//for(int i = 0; i < 100; i++)
