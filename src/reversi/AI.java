@@ -194,7 +194,7 @@ public class AI {
     return score;
   }
 
-  private  double calculateLevelMediumFunction(Board grid, Color my_color) {
+  public  double calculateLevelMediumFunction(Board grid, Color my_color) {
     int my_tiles = 0, opp_tiles = 0, i, j, k, my_front_tiles = 0, opp_front_tiles = 0, x, y;
     double p = 0, c = 0, l = 0, f = 0, d = 0;
     Color opp_color;
@@ -282,7 +282,7 @@ public class AI {
     return score;
   }
 
-  private  Double calculateLevelEasyFunction(Board board, Color color) {
+  public  Double calculateLevelEasyFunction(Board board, Color color) {
 
     // Calcula o número de peças do jogador no tabuleiro.
     Integer tilesNumber = 0;

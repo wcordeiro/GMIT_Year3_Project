@@ -375,6 +375,8 @@ public class Game {
 
 	      if (possibleMoves.get(Color.BLACK) == null
 	              && possibleMoves.get(Color.WHITE) == null) {
+	    	  Node node = new Node (artificialInteligence.board,Color.WHITE);
+	    	  player.learn(node, player.getV(), player.getNewA(), player.getNewB(), player.getNewC());
 	    	  break;
 	      }
 	      if(turnColor == Color.BLACK){
@@ -385,9 +387,9 @@ public class Game {
 	      
 	      if (move != null) {                
 	          artificialInteligence.board.executeMovement(move);
+	          
 	      }
 	      
-
 	        turnColor = Color.getOpositeColor(turnColor);
 	        printBoard(turnColor);
 	      
