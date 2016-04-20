@@ -49,11 +49,11 @@ public class ReinforcementLearner implements Player{
 		this.v = 0.0;
 		this.r = 0.9;
 		this.learningRate = 0.2;
-		this.otherColor = color;
+		this.ownColor = color;
 		if(color == Color.BLACK)
-			this.ownColor = Color.WHITE;
+			this.otherColor = Color.WHITE;
 		else
-			this.ownColor = Color.BLACK;
+			this.otherColor = Color.BLACK;
 		this.newA = 0.0;
 		this.newB = 0.0;
 		this.newC = 0.0;

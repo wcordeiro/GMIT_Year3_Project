@@ -363,6 +363,18 @@ public class Game {
 	    		  node = new Node(artificialInteligence.board,Color.getOpositeColor(player1Color));
 	    		  training.learn(node, training.getV(), training.getNewA(), training.getNewA(), training.getNewA());
 	    	  }
+	    	  
+	    	  if(player1.getClass() == ReinforcementLearner.class){
+	    		  ReinforcementLearner training = (ReinforcementLearner) player1;
+	    		  node = new Node(artificialInteligence.board,player1Color);
+	    		  training.learn(node, training.getV(), training.getNewA(), training.getNewA(), training.getNewA());
+	    	  }
+	    	  else if(player2.getClass() == ReinforcementLearner.class){
+	    		  ReinforcementLearner training = (ReinforcementLearner) player2;
+	    		  node = new Node(artificialInteligence.board,Color.getOpositeColor(player1Color));
+	    		  training.learn(node, training.getV(), training.getNewA(), training.getNewA(), training.getNewA());
+	    	  }
+	    	  
 	    	  break;
 	      }
 	      if(turnColor == player1Color){

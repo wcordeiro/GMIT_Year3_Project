@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" automaticImage="JPEG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
+  router="FAN">  
+  <class id="1" language="java" name="reversi.Game.Evento" project="Reversi" file="/Reversi/src/reversi/Game.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1228" y="921"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="reversi.ReinforcementLearner" project="Reversi" 
+    file="/Reversi/src/reversi/ReinforcementLearner.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1766" y="394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="reversi.Parser" project="Reversi" file="/Reversi/src/reversi/Parser.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="362" y="55"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="util.Util" project="Reversi" file="/Reversi/src/util/Util.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="551" y="82"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="reversi.Game.EventoUndo" project="Reversi" file="/Reversi/src/reversi/Game.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1453" y="1171"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="reversi.Movement" project="Reversi" file="/Reversi/src/reversi/Movement.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="896" y="957"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="7" language="java" name="reversi.Color" project="Reversi" file="/Reversi/src/reversi/Color.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2409" y="1763"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="8" language="java" name="reversi.SemiRandomPlayer" project="Reversi" 
+    file="/Reversi/src/reversi/SemiRandomPlayer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2980" y="73"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="9" language="java" name="reversi.Direction" project="Reversi" 
+    file="/Reversi/src/reversi/Direction.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="496" y="1843"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="10" language="java" name="reversi.PartialMovement" project="Reversi" 
+    file="/Reversi/src/reversi/PartialMovement.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="574" y="1328"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="reversi.Reversi" project="Reversi" file="/Reversi/src/reversi/Reversi.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="739" y="55"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="reversi.AI" project="Reversi" file="/Reversi/src/reversi/AI.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2423" y="1314"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="reversi.Board" project="Reversi" file="/Reversi/src/reversi/Board.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1667" y="1788"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="reversi.Position" project="Reversi" file="/Reversi/src/reversi/Position.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="701" y="1807"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="reversi.Node" project="Reversi" file="/Reversi/src/reversi/Node.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1163" y="100"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="reversi.SVM" project="Reversi" file="/Reversi/src/reversi/SVM.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2589" y="136"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="reversi.ReinforcementLearnerWithExtraInfo" project="Reversi" 
+    file="/Reversi/src/reversi/ReinforcementLearnerWithExtraInfo.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2197" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="reversi.Game" project="Reversi" file="/Reversi/src/reversi/Game.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1463" y="807"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="reversi.CMDExecutor" project="Reversi" 
+    file="/Reversi/src/reversi/CMDExecutor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="940" y="55"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="20" language="java" name="reversi.Player" project="Reversi" file="/Reversi/src/reversi/Player.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2974" y="1064"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="21" language="java" name="reversi.Game.ImagePanel" project="Reversi" file="/Reversi/src/reversi/Game.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1689" y="1174"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="22">    
+    <bendpoint x="767" y="1266"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="23" name="emptyPosition"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="26" name="artificialInteligence"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <bendpoint x="2005" y="1266"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="29" name="humanColor"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="31">    
+    <bendpoint x="2608" y="868"/>    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="32">    
+    <bendpoint x="2026" y="1266"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="33" name="BEGGINER_COLOR"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="36" name="artificialInteligence"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="38">    
+    <bendpoint x="2388" y="868"/>    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="39">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="40" name="direction"/>      
+      <multiplicity id="41" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="42">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="43">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="44" name="movements"/>      
+      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <bendpoint x="1086" y="868"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="47" name="board"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="49">    
+    <bendpoint x="2409" y="868"/>    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="50">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="51" name="board"/>      
+      <multiplicity id="52" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="53">    
+    <bendpoint x="1065" y="868"/>    
+    <bendpoint x="1065" y="1266"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="54" name="playerColor"/>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="56">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
+  <association id="57">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="58" name="movement"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="61" name="board"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="63">    
+    <bendpoint x="1963" y="868"/>    
+    <bendpoint x="1963" y="1266"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="64" name="ownColor"/>      
+      <multiplicity id="65" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="66">    
+    <bendpoint x="1879" y="868"/>    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="67" name="board"/>      
+      <multiplicity id="68" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="70" name="playerTile"/>      
+      <multiplicity id="71" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="72">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="21"/>  
+  </nesting>  
+  <association id="73">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="74" name="artificialInteligence"/>      
+      <multiplicity id="75" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="76">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="77" name="children"/>      
+      <multiplicity id="78" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="79">    
+    <bendpoint x="1984" y="868"/>    
+    <bendpoint x="1984" y="1266"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="80" name="otherColor"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="82">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="83" name="predecessor"/>      
+      <multiplicity id="84" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="86" name="evtUndo"/>      
+      <multiplicity id="87" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="88">    
+    <bendpoint x="1900" y="868"/>    
+    <bendpoint x="1900" y="1266"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="89" name="otherColor"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="91">    
+    <bendpoint x="1921" y="868"/>    
+    <bendpoint x="1921" y="1266"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="92" name="ownColor"/>      
+      <multiplicity id="93" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="94">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="95" name="emptySpace"/>      
+      <multiplicity id="96" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="97">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="98" name="artificialInteligence"/>      
+      <multiplicity id="99" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="100">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="101" name="evt"/>      
+      <multiplicity id="102" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="103">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <association id="104">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="105" name="artificialInteligence"/>      
+      <multiplicity id="106" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="107">    
+    <bendpoint x="2367" y="868"/>    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="108">    
+    <bendpoint x="1942" y="868"/>    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="109" name="player"/>      
+      <multiplicity id="110" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
