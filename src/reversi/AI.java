@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class AI {
+import javax.swing.JOptionPane;
+
+public class AI implements Player{
   public Color BEGGINER_COLOR = Color.BLACK;
   public Integer DEFAUTL_DEPTH = 5;
   public Integer MAX_DEPTH = DEFAUTL_DEPTH;
@@ -415,5 +417,37 @@ public class AI {
     	movementsMap.put(bestPlay.emptyPosition, bestPlay.evalScore);
     return bestPlay;
   }
+
+Boolean flag = true;  
+@Override
+public Movement selectMovement(Board board, Color color) {
+	if(flag){
+		
+    	this.level = JOptionPane.showInputDialog("Choose a level:\n"
+            + "1 - Easy\n2 - Medium\n3 - Hard");
+
+    	if (this.level.equals("1")) {
+    		this.DEFAUTL_DEPTH = 5;
+    	} 
+    	else if (this.level.equals("2")) {
+    		this.DEFAUTL_DEPTH = 5;
+    	} 
+    	else {
+    		this.DEFAUTL_DEPTH = 6;
+    	}
+
+
+    	flag = false;
+	}
+	return this.play(board, color);
+}
+
+@Override
+public void setSVMParameters(AI artificialInteligence, Map<Position, Double> movementsMade) {
+	// TODO Auto-generated method stub
+	
+}
+
+
   
 }

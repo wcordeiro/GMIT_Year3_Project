@@ -61,34 +61,19 @@ public class Game {
   private JButton undo_buttom;
   private JLabel black;
   private JLabel white;
+  private JLabel play1;
+  private JLabel play2;
   private JLabel black_points;
   private JLabel white_points;
   private JPanel bottom_panel;
   private Evento evt;
   private EventoUndo evtUndo;
   private Boolean isWainting;
+  
+  private Player player;
 
   private void playAgainstHuman() {
-    String option = JOptionPane.showInputDialog("Escolha uma cor (" + artificialInteligence.BEGGINER_COLOR.name() + " começa):\n"
-            + "1 - Preto\n2 - Branco");
-    artificialInteligence.level = JOptionPane.showInputDialog("Escolha uma dificuldade:\n"
-            + "1 - Facil\n2 - Medio\n3 - Dificil");
-
-    if (artificialInteligence.level.equals("1")) {
-      artificialInteligence.DEFAUTL_DEPTH = 5;
-    } else if (artificialInteligence.level.equals("2")) {
-      artificialInteligence.DEFAUTL_DEPTH = 5;
-    } else {
-      artificialInteligence.DEFAUTL_DEPTH = 6;
-    }
-
-    if (option.equals("1")) {
-      artificialInteligence.humanColor = Color.BLACK;
-    } else if (option.equals("2")) {
-      artificialInteligence.humanColor = Color.WHITE;
-    } else {
-      artificialInteligence.humanColor = Color.BLACK;
-    }
+	  Map<Position,Double> movementsMap = new HashMap<Position,Double>();
 
     // -------------------------------------
     artificialInteligence.board = new Board();
@@ -151,8 +136,8 @@ public class Game {
       } else if (possibleMoves.get(turnColor) != null) {
 
         long tempoInicio = System.currentTimeMillis();
-
-        move = artificialInteligence.play(artificialInteligence.board, turnColor);
+        player.setSVMParameters(artificialInteligence, movementsMap);
+        move = player.selectMovement(artificialInteligence.board, turnColor);
 
         long tempoFinal = System.currentTimeMillis() - tempoInicio;
         Double segundos = ((double) tempoFinal) / 1000;
@@ -161,6 +146,10 @@ public class Game {
 
       if (move != null) {                
         artificialInteligence.board.executeMovement(move);
+        Node node = new Node(artificialInteligence.board,turnColor);
+        Node child = new Node(node, move);
+        move.evalScore = artificialInteligence.calculateLevelHardFunction(child.board, turnColor);
+        movementsMap.put(move.emptyPosition, move.evalScore);
       }
 
       turnColor = Color.getOpositeColor(turnColor);
@@ -169,10 +158,7 @@ public class Game {
     
   }
   
-  public void playAgainstAI(int k) throws IOException{
-	  artificialInteligence.level = "3";
-	  artificialInteligence.DEFAUTL_DEPTH = 1;
-	  artificialInteligence.humanColor = Color.WHITE;
+  public void playAgainstSVM() throws IOException{
 	  Map<Position,Double> movementsMap = new HashMap<Position,Double>();
 	  SVM svm = new SVM();
 	  
@@ -269,7 +255,6 @@ public class Game {
 	    	  break;
 	      }
 	      if(turnColor == Color.BLACK){
-	    	//  jogada = IA.play(IA.tabuleiro, corDaVez);
 	    	  Random rand = new Random();
 	    	  try{
 	    		  if(possibleMoviments.get(turnColor) == null){
@@ -299,13 +284,7 @@ public class Game {
 	          Node child = new Node(node, move);
 	          move.evalScore = artificialInteligence.calculateLevelHardFunction(child.board, turnColor);
 	          movementsMap.put(move.emptyPosition, move.evalScore);
-	       //   if(corDaVez == Cor.BRANCO)
-	       // 	  bw.write("+" + jogada.posicaoVazia.x + jogada.posicaoVazia.y);
-	       //   else
-	        //	  bw.write("-" + jogada.posicaoVazia.x + jogada.posicaoVazia.y);
 	      }
-	      //jogada.posicaoVazia.x;
-	      
 	      
 
 	        turnColor = Color.getOpositeColor(turnColor);
@@ -329,12 +308,10 @@ public class Game {
 	  
   }
   
-  public void playAgainstReinforcement() throws IOException{
-	  artificialInteligence.level = "3";
-	  artificialInteligence.DEFAUTL_DEPTH = 1;
-	  ReinforcementLearner player = new ReinforcementLearner(artificialInteligence,Color.WHITE);
+  public void playAIvsAI(Player player1,Player player2, Color player1Color) throws IOException{
 	  Map<Position,Double> movementsMap = new HashMap<Position,Double>();	  
-	  
+	  play1.setVisible(true);
+	  play2.setVisible(true);
 	  artificialInteligence.board = new Board();
 	    List<Movement> movements = artificialInteligence.board.calcultePossibleMovesByColor(artificialInteligence.humanColor);
 	    for (int i = 0; i < B.length; i++) {
@@ -375,30 +352,35 @@ public class Game {
 
 	      if (possibleMoves.get(Color.BLACK) == null
 	              && possibleMoves.get(Color.WHITE) == null) {
-	    	  Node node = new Node (artificialInteligence.board,Color.WHITE);
-	    	  player.learn(node, player.getV(), player.getNewA(), player.getNewB(), player.getNewC());
 	    	  break;
 	      }
-	      if(turnColor == Color.BLACK){
-	    	  move = artificialInteligence.play(artificialInteligence.board, turnColor);
+	      if(turnColor == player1Color){
+	    	  player1.setSVMParameters(artificialInteligence, movementsMap);
+	          move = player1.selectMovement(artificialInteligence.board, turnColor);
 	      }
-	      else
-	    	  move = player.findMove();
-	      
+	      else{
+	    	  	player2.setSVMParameters(artificialInteligence, movementsMap);
+	        	move = player2.selectMovement(artificialInteligence.board, turnColor);
+	      }
 	      if (move != null) {                
 	          artificialInteligence.board.executeMovement(move);
-	          
+	          Node node = new Node(artificialInteligence.board,turnColor);
+	          Node child = new Node(node, move);
+	          move.evalScore = artificialInteligence.calculateLevelHardFunction(child.board, turnColor);
+	          movementsMap.put(move.emptyPosition, move.evalScore);
 	      }
 	      
 	        turnColor = Color.getOpositeColor(turnColor);
 	        printBoard(turnColor);
 	      
 	    }
-	    TreeMap<Color, Integer> numPecas = artificialInteligence.board.calculateNumberTiles();
-
-	   // Integer numPretas = numPecas.get(Color.BLACK);
-	   // Integer numBrancas = numPecas.get(Color.WHITE);
-	  
+	    try {
+	    	Thread.currentThread().sleep(100);
+	    } 
+	    catch (InterruptedException e) {
+	    	// TODO Auto-generated catch block
+	    	e.printStackTrace();
+	    }
   }
 
   public void printBoard(Color color) {
@@ -440,6 +422,7 @@ public class Game {
           if(isWainting) 
             return null;
           board = artificialInteligence.board.clone();         
+          Map<Position,Double> movementsMap = new HashMap<Position,Double>();
           boardStack.push(board);
           for (int i = 0; i < B.length; i++) {
             for (int j = 0; j < B[i].length; j++) {
@@ -447,16 +430,27 @@ public class Game {
                 Movement move = artificialInteligence.board.calcuteMove(new Position(i, j), artificialInteligence.humanColor);
                 try {
                   artificialInteligence.board.executeMovement(move);
+                  Node node = new Node(artificialInteligence.board,artificialInteligence.humanColor);
+                  Node child = new Node(node, move);
+                  move.evalScore = artificialInteligence.calculateLevelHardFunction(child.board, artificialInteligence.humanColor);
+                  movementsMap.put(move.emptyPosition, move.evalScore);
                   isWainting = true;                  
                   printBoard(Color.getOpositeColor(artificialInteligence.humanColor));
-                  Movement play = artificialInteligence.play(artificialInteligence.board, Color.getOpositeColor(artificialInteligence.humanColor));                  
+                  player.setSVMParameters(artificialInteligence, movementsMap);
+                  Movement play = player.selectMovement(artificialInteligence.board, Color.getOpositeColor(artificialInteligence.humanColor)); 
+                 // Movement play = artificialInteligence.play(artificialInteligence.board, Color.getOpositeColor(artificialInteligence.humanColor));                  
                   if (play != null) {                    
-                    artificialInteligence.board.executeMovement(play);                    
+                    artificialInteligence.board.executeMovement(play); 
+                    Node nodes = new Node(artificialInteligence.board,Color.getOpositeColor(artificialInteligence.humanColor));
+                    Node childs = new Node(nodes, move);
+                    move.evalScore = artificialInteligence.calculateLevelHardFunction(childs.board, Color.getOpositeColor(artificialInteligence.humanColor));
+                    movementsMap.put(move.emptyPosition, move.evalScore);
                   }
                   try {
                     Thread.sleep(1000);                 //1000 milliseconds is one second.
                   } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
+                    ex.printStackTrace();
                   }
                   isWainting = false;
                   printBoard(artificialInteligence.humanColor);
@@ -473,11 +467,16 @@ public class Game {
                           artificialInteligence.board.calcultePossibleMovesByColor(Color.WHITE)
                   );
                   while (possibleMoves.get(artificialInteligence.humanColor) == null && possibleMoves.get(Color.getOpositeColor(artificialInteligence.humanColor)) != null) {
-                    play = artificialInteligence.play(artificialInteligence.board, Color.getOpositeColor(artificialInteligence.humanColor));
+                	player.setSVMParameters(artificialInteligence, movementsMap);
+                    play = player.selectMovement(artificialInteligence.board, Color.getOpositeColor(artificialInteligence.humanColor)); 
                     if (play != null) {
 //                      t = IA.tabuleiro.clone();         
 //                      pilhaTabuleiros.push(t);
                       artificialInteligence.board.executeMovement(play);
+                      Node nodes = new Node(artificialInteligence.board,Color.getOpositeColor(artificialInteligence.humanColor));
+                      Node childs = new Node(nodes, move);
+                      move.evalScore = artificialInteligence.calculateLevelHardFunction(childs.board, Color.getOpositeColor(artificialInteligence.humanColor));
+                      movementsMap.put(move.emptyPosition, move.evalScore);
                     }
                     printBoard(artificialInteligence.humanColor);
                     frame.repaint();
@@ -503,6 +502,7 @@ public class Game {
                   }
                 } catch (Exception ex) {
                   System.out.println(ex);
+                  ex.printStackTrace();
                 }
               }
             }
@@ -576,10 +576,22 @@ public class Game {
     
     undo_buttom.setLocation((frame.getWidth()-undo_buttom.getWidth())/2 + 20, 30);
     
+    
+    play1 = new JLabel();
+    play1.setLocation(0,10);
+    
+    play1.setSize(100, 50);
+    play2 = new JLabel();
+    play1.setLocation(0,50);
+    play2.setSize(100, 50);
+    //play1.setVisible(false);
+   // play2.setVisible(false);
+    bottom_panel.add(play1);
     bottom_panel.add(black);
     bottom_panel.add(white);
     bottom_panel.add(black_points);
     bottom_panel.add(white_points);
+    bottom_panel.add(play2);
     bottom_panel.add(undo_buttom, BorderLayout.CENTER);
     evt = new Game.Evento();
     evtUndo = new Game.EventoUndo();
@@ -601,25 +613,114 @@ public class Game {
       }
     }
     bigger_frame.add(frame);//  ,BorderLayout.NORTH);
-    bigger_frame.add(bottom_panel,BorderLayout.SOUTH);
-    
+   // bigger_frame.add(play1,BorderLayout.PAGE_END);
+    bigger_frame.add(bottom_panel,BorderLayout.PAGE_END);
+   // bigger_frame.add(play2,BorderLayout.PAGE_END);
 //    bigger_frame.pack();
     bigger_frame.setVisible(true);
 
-    try {
-		this.playAgainstReinforcement();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+    String option = JOptionPane.showInputDialog("1 - Computer vs Computer \n2 - Human vs Computer");
+    if(option.equals("1")){
+    	try {
+			this.optionsComputerVsComputer();
+		} catch (IOException e) {
+			System.out.println("Reinforcement Learning error");
+			e.printStackTrace();
+		}
+    }
+    else{
+    	this.optionsHumansVSComputer();
+    }
+  }
+
+  private void optionsComputerVsComputer() throws IOException {
+	  String option = JOptionPane.showInputDialog("1 - MiniMax vs SVM"
+	  		+ " \n2 - MiniMax vs Reinforcement"
+	  		+ " \n3 - MiniMax vs SemiRandom"
+	  		+ " \n4 - SVM vs Reinforcement"
+	  		+ " \n5 - SVM vs SemiRandom"
+	  		+ " \n6 - Reinforcement vs SemiRandom");
+	  Player player1 = null;
+	  Color colorPlayer1;
+	  Player player2 = null;
+	  Random rand = new Random();
+	  if(rand.nextInt(11) < 5){
+		  colorPlayer1 = Color.WHITE;
+	  }
+	  else{
+		  colorPlayer1 = Color.BLACK;
+	  }
+	  if(option.equals("1")){
+		  player1 = this.artificialInteligence;
+		  player2 = new SVM();
+		  play1.setText("MiniMax -" + colorPlayer1.name());
+		  play2.setText("SVM -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else if(option.equals("2")){
+		  player1 = this.artificialInteligence;
+		  player2 = new ReinforcementLearner(Color.getOpositeColor(colorPlayer1));
+		  play1.setText("MiniMax -" + colorPlayer1.name());
+		  play2.setText("Reinforcement -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else if(option.equals("3")){
+		  player1 = this.artificialInteligence;
+		  player2 = new SemiRandomPlayer();
+		  play1.setText("MiniMax -" + colorPlayer1.name());
+		  play2.setText("SemiRandom -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else if(option.equals("4")){
+		  player1 = new SVM();
+		  player2 = new ReinforcementLearner(Color.getOpositeColor(colorPlayer1));
+		  play1.setText("SVM -" + colorPlayer1.name());
+		  play2.setText("Reinforcement -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else if(option.equals("5")){
+		  player1 = new SVM();
+		  player2 = new SemiRandomPlayer();
+		  play1.setText("SVM -" + colorPlayer1.name());
+		  play2.setText("SemiRandom -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else {
+		  player1 = new ReinforcementLearner(colorPlayer1);
+		  player2 = new SemiRandomPlayer();
+		  play1.setText("Reinforcement -" + colorPlayer1.name());
+		  play2.setText("SemiRandom -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  this.playAIvsAI(player1, player2, colorPlayer1);
 	}
-    /*
-    try {
-	//for(int i = 0; i < 100; i++)
-			jogaContraPc(k);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}*/
+
+private void optionsHumansVSComputer() {
+	String option = JOptionPane.showInputDialog("1 - MiniMax \n2 - SVM \n3 - Reinforcement \n4 - SemiRandom");
+	String colorOption = JOptionPane.showInputDialog("Choose a color (" + artificialInteligence.BEGGINER_COLOR.name() + " starts):\n"
+            + "1 - Black\n2 - White");
+	if (colorOption.equals("1")) {
+		artificialInteligence.humanColor = Color.BLACK;
+	} 
+	else if (colorOption.equals("2")) {
+		artificialInteligence.humanColor = Color.WHITE;
+	} 	
+	else {
+		artificialInteligence.humanColor = Color.BLACK;
+	}
+	///Player player = null;
+	if(option.equals("1")){
+		player = this.artificialInteligence;
+	}
+	else if(option.equals("2")){
+		player = new SVM();
+	}
+	else if(option.equals("3")){
+		try {
+			player = new ReinforcementLearner(artificialInteligence.humanColor);
+		} catch (IOException e) {
+			System.out.println("Reinforcement Learning error");
+			e.printStackTrace();
+		}
+	}
+	else{
+		player = new SemiRandomPlayer();
+	}
+	this.playAgainstHuman();
   }
 
 }

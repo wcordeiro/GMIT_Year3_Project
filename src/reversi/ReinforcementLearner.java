@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ReinforcementLearner {
+public class ReinforcementLearner implements Player{
 	private Double a; 
 	private Double b;
 	private Double c;
@@ -25,7 +25,7 @@ public class ReinforcementLearner {
 	private Double newC;
 	private Double v;
 	
-	public ReinforcementLearner(AI artificialInteligence,Color color) throws IOException{
+	public ReinforcementLearner(Color color) throws IOException{
 		File arq = new File("ReinforcementMiniMax.txt");
 		if(!arq.exists()){
 			this.a = Math.random();
@@ -49,12 +49,11 @@ public class ReinforcementLearner {
 		this.v = 0.0;
 		this.r = 0.9;
 		this.learningRate = 0.2;
-		this.ownColor = color;
+		this.otherColor = color;
 		if(color == Color.BLACK)
-			this.otherColor = Color.WHITE;
+			this.ownColor = Color.WHITE;
 		else
-			this.otherColor = Color.BLACK;
-		this.artificialInteligence = artificialInteligence;
+			this.ownColor = Color.BLACK;
 		this.newA = 0.0;
 		this.newB = 0.0;
 		this.newC = 0.0;
@@ -324,6 +323,17 @@ public class ReinforcementLearner {
 
 	public void setV(Double v) {
 		this.v = v;
+	}
+
+	@Override
+	public Movement selectMovement(Board board, Color color) {
+		return this.findMove();
+	}
+
+	@Override
+	public void setSVMParameters(AI artificialInteligence, Map<Position, Double> movementsMade) {
+		this.artificialInteligence = artificialInteligence;
+		
 	}
 	
 	

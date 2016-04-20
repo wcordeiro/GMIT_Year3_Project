@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class SVM {
+public class SVM implements Player{
 	private HashMap<String,Integer> dictionary;
 	Map<Integer,Double> ascsortedMAP = new TreeMap<Integer,Double>();
 	
@@ -174,5 +174,20 @@ public class SVM {
 			e.printStackTrace();
 		}
 		return biggestIndex;
+	}
+
+	@Override
+	public Movement selectMovement(Board board, Color color) {
+		
+		return this.evaluatePositions(color, artificialInteligence, movements);
+	}
+
+	AI artificialInteligence; 
+	Map<Position, Double> movements;
+	@Override
+	public void setSVMParameters(AI artificialInteligence, Map<Position, Double> movements) {
+		this.artificialInteligence = artificialInteligence;
+		this.movements = movements;
+		
 	}
 }
