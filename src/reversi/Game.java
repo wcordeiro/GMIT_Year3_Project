@@ -352,6 +352,17 @@ public class Game {
 
 	      if (possibleMoves.get(Color.BLACK) == null
 	              && possibleMoves.get(Color.WHITE) == null) {
+	    	  Node node;
+	    	  if(player1.getClass() == ReinforcementLearnerWithExtraInfo.class){
+	    		  ReinforcementLearnerWithExtraInfo training = (ReinforcementLearnerWithExtraInfo) player1;
+	    		  node = new Node(artificialInteligence.board,player1Color);
+	    		  training.learn(node, training.getV(), training.getNewA(), training.getNewA(), training.getNewA());
+	    	  }
+	    	  else if(player2.getClass() == ReinforcementLearnerWithExtraInfo.class){
+	    		  ReinforcementLearnerWithExtraInfo training = (ReinforcementLearnerWithExtraInfo) player2;
+	    		  node = new Node(artificialInteligence.board,Color.getOpositeColor(player1Color));
+	    		  training.learn(node, training.getV(), training.getNewA(), training.getNewA(), training.getNewA());
+	    	  }
 	    	  break;
 	      }
 	      if(turnColor == player1Color){
@@ -635,11 +646,15 @@ public class Game {
 
   private void optionsComputerVsComputer() throws IOException {
 	  String option = JOptionPane.showInputDialog("1 - MiniMax vs SVM"
-	  		+ " \n2 - MiniMax vs Reinforcement"
-	  		+ " \n3 - MiniMax vs SemiRandom"
-	  		+ " \n4 - SVM vs Reinforcement"
-	  		+ " \n5 - SVM vs SemiRandom"
-	  		+ " \n6 - Reinforcement vs SemiRandom");
+	  		+ " \n2 - MiniMax vs ReinforcementMiniMax"
+	  		+ " \n3 - MiniMax vs Reinforcement"
+	  		+ " \n4 - MiniMax vs SemiRandom"
+	  		+ " \n5 - SVM vs Reinforcement"
+	  		+ " \n6 - SVM vs SemiRandom"
+	  		+ " \n7 - SVM vs ReinforcementMiniMax"
+	  		+ " \n8 - Reinforcement vs ReinforcementMiniMax"
+	  		+ " \n9 - Reinforcement vs SemiRandom"
+	  		+ " \n10 - ReinforcementMiniMax vs SemiRandom");
 	  Player player1 = null;
 	  Color colorPlayer1;
 	  Player player2 = null;
@@ -658,39 +673,63 @@ public class Game {
 	  }
 	  else if(option.equals("2")){
 		  player1 = this.artificialInteligence;
-		  player2 = new ReinforcementLearner(Color.getOpositeColor(colorPlayer1));
+		  player2 = new ReinforcementLearnerWithExtraInfo(Color.getOpositeColor(colorPlayer1));
 		  play1.setText("MiniMax -" + colorPlayer1.name());
-		  play2.setText("Reinforcement -" + Color.getOpositeColor(colorPlayer1).name());
+		  play2.setText("ReinforM -" + Color.getOpositeColor(colorPlayer1).name());
 	  }
 	  else if(option.equals("3")){
+		  player1 = this.artificialInteligence;
+		  player2 = new ReinforcementLearner(Color.getOpositeColor(colorPlayer1));
+		  play1.setText("MiniMax -" + colorPlayer1.name());
+		  play2.setText("Reinfor -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else if(option.equals("4")){
 		  player1 = this.artificialInteligence;
 		  player2 = new SemiRandomPlayer();
 		  play1.setText("MiniMax -" + colorPlayer1.name());
 		  play2.setText("SemiRandom -" + Color.getOpositeColor(colorPlayer1).name());
 	  }
-	  else if(option.equals("4")){
+	  else if(option.equals("5")){
 		  player1 = new SVM();
 		  player2 = new ReinforcementLearner(Color.getOpositeColor(colorPlayer1));
 		  play1.setText("SVM -" + colorPlayer1.name());
-		  play2.setText("Reinforcement -" + Color.getOpositeColor(colorPlayer1).name());
+		  play2.setText("Reinfor -" + Color.getOpositeColor(colorPlayer1).name());
 	  }
-	  else if(option.equals("5")){
+	  else if(option.equals("6")){
 		  player1 = new SVM();
 		  player2 = new SemiRandomPlayer();
 		  play1.setText("SVM -" + colorPlayer1.name());
 		  play2.setText("SemiRandom -" + Color.getOpositeColor(colorPlayer1).name());
 	  }
-	  else {
+	  else if(option.equals("7")){
+		  player1 = new SVM();
+		  player2 = new ReinforcementLearnerWithExtraInfo(Color.getOpositeColor(colorPlayer1));
+		  play1.setText("SVM -" + colorPlayer1.name());
+		  play2.setText("ReinforE -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else if(option.equals("8")){
+		  player1 = new ReinforcementLearner(colorPlayer1);
+		  player2 = new ReinforcementLearnerWithExtraInfo(Color.getOpositeColor(colorPlayer1));
+		  play1.setText("Reinfor -" + colorPlayer1.name());
+		  play2.setText("ReinforE -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else if(option.equals("9")){
 		  player1 = new ReinforcementLearner(colorPlayer1);
 		  player2 = new SemiRandomPlayer();
-		  play1.setText("Reinforcement -" + colorPlayer1.name());
+		  play1.setText("Reinfor -" + colorPlayer1.name());
+		  play2.setText("SemiRandom -" + Color.getOpositeColor(colorPlayer1).name());
+	  }
+	  else {
+		  player1 = new ReinforcementLearnerWithExtraInfo(colorPlayer1);
+		  player2 = new SemiRandomPlayer();
+		  play1.setText("ReinforE -" + colorPlayer1.name());
 		  play2.setText("SemiRandom -" + Color.getOpositeColor(colorPlayer1).name());
 	  }
 	  this.playAIvsAI(player1, player2, colorPlayer1);
 	}
 
 private void optionsHumansVSComputer() {
-	String option = JOptionPane.showInputDialog("1 - MiniMax \n2 - SVM \n3 - Reinforcement \n4 - SemiRandom");
+	String option = JOptionPane.showInputDialog("1 - MiniMax \n2 - SVM \n3 - ReinforcementMiniMax \n4 - Reinforcement \n5 - SemiRandom");
 	String colorOption = JOptionPane.showInputDialog("Choose a color (" + artificialInteligence.BEGGINER_COLOR.name() + " starts):\n"
             + "1 - Black\n2 - White");
 	if (colorOption.equals("1")) {
@@ -710,6 +749,14 @@ private void optionsHumansVSComputer() {
 		player = new SVM();
 	}
 	else if(option.equals("3")){
+		try {
+			player = new ReinforcementLearnerWithExtraInfo(artificialInteligence.humanColor);
+		} catch (IOException e) {
+			System.out.println("Reinforcement Learning error");
+			e.printStackTrace();
+		}
+	}
+	else if(option.equals("4")){
 		try {
 			player = new ReinforcementLearner(artificialInteligence.humanColor);
 		} catch (IOException e) {

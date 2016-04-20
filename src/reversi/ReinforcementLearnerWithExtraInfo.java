@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ReinforcementLearner implements Player{
+public class ReinforcementLearnerWithExtraInfo implements Player{
 	private Double a; 
 	private Double b;
 	private Double c;
@@ -25,8 +25,8 @@ public class ReinforcementLearner implements Player{
 	private Double newC;
 	private Double v;
 	
-	public ReinforcementLearner(Color color) throws IOException{
-		File arq = new File("Reinforcement.txt");
+	public ReinforcementLearnerWithExtraInfo(Color color) throws IOException{
+		File arq = new File("ReinforcementMiniMax.txt");
 		if(!arq.exists()){
 			this.a = Math.random();
 			this.b = Math.random();
@@ -34,7 +34,7 @@ public class ReinforcementLearner implements Player{
 			this.v = 0.0;
 		}
 		else{
-			BufferedReader br = new BufferedReader(new FileReader("Reinforcement.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("ReinforcementMiniMax.txt"));
 			String aux;
 			aux = br.readLine();
 			this.a = Double.valueOf(aux);
@@ -49,50 +49,90 @@ public class ReinforcementLearner implements Player{
 		this.v = 0.0;
 		this.r = 0.9;
 		this.learningRate = 0.2;
-		this.otherColor = color;
+		this.ownColor = color;
 		if(color == Color.BLACK)
-			this.ownColor = Color.WHITE;
+			this.otherColor = Color.WHITE;
 		else
-			this.ownColor = Color.BLACK;
+			this.otherColor = Color.BLACK;
 		this.newA = 0.0;
 		this.newB = 0.0;
 		this.newC = 0.0;
 	}
 	
 	public Double findInputA(Node node){
-		List<Movement> possibleMoves = node.board.calcultePossibleMovesByColor(ownColor);
-		double score = artificialInteligence.calculateLevelEasyFunction(node.board, ownColor);
+		List<Movement> possibleOpponentMoves = node.board.calcultePossibleMovesByColor(otherColor);
+		double opponentScoreHard = artificialInteligence.calculateLevelHardFunction(node.board, ownColor);
+		double opponentScoreEasy = artificialInteligence.calculateLevelEasyFunction(node.board, ownColor);
+		double score = 0.0;
 		double max = 0;
-		Node nodo = new Node(node.board,ownColor);
-		if(possibleMoves == null){
-			return (64-score)/64;
+		double scoreReturn = 0.0;
+		if(possibleOpponentMoves == null){
+			return (64-opponentScoreEasy)/64;
 		}
-		for(Movement move : possibleMoves){
-			Node filho = new Node(nodo, move);
-			score = artificialInteligence.calculateLevelEasyFunction(filho.board, ownColor) - score;
-			if(max < score){
-				max = score;
+		else{
+			Node nodo = new Node(node.board,otherColor);
+			for(Movement move : possibleOpponentMoves){
+				Node child = new Node(nodo, move);
+				List<Movement> possibleMoves = child.board.calcultePossibleMovesByColor(ownColor);
+				if(possibleMoves == null){
+					score = artificialInteligence.calculateLevelHardFunction(child.board, ownColor) - opponentScoreHard;
+					if(max < score){
+						max = score;
+						scoreReturn = artificialInteligence.calculateLevelEasyFunction(child.board, ownColor) - opponentScoreEasy;
+					}
+				}
+				else{
+					for(Movement movement : possibleMoves){
+						Node grandChild = new Node(child, movement);
+						score = artificialInteligence.calculateLevelHardFunction(grandChild.board, ownColor) - opponentScoreHard;
+						if(max < score){
+							max = score;
+							scoreReturn = artificialInteligence.calculateLevelEasyFunction(grandChild.board, ownColor) - opponentScoreEasy;
+						}
+					}
+				}
+				
 			}
 		}
-		return (64-max)/64;
+		return (64-scoreReturn)/64;
 	}
 	
 	public Double findInputB(Node node){
-		List<Movement> possibleMoves = node.board.calcultePossibleMovesByColor(otherColor);
-		double score = artificialInteligence.calculateLevelEasyFunction(node.board, otherColor);
+		List<Movement> possibleOpponentMoves = node.board.calcultePossibleMovesByColor(otherColor);
+		double opponentScoreHard = artificialInteligence.calculateLevelHardFunction(node.board, otherColor);
+		double opponentScoreEasy = artificialInteligence.calculateLevelEasyFunction(node.board, otherColor);
+		double score = 0.0;
 		double max = 0;
-		Node nodo = new Node(node.board,otherColor);
-		if(possibleMoves == null){
-			return (64-score)/64;
+		double scoreReturn = 0.0;
+		if(possibleOpponentMoves == null){
+			return (64-opponentScoreEasy)/64;
 		}
-		for(Movement move : possibleMoves){
-			Node filho = new Node(nodo, move);
-			score = artificialInteligence.calculateLevelEasyFunction(filho.board, otherColor) - score;
-			if(max < score){
-				max = score;
+		else{
+			Node nodo = new Node(node.board,otherColor);
+			for(Movement move : possibleOpponentMoves){
+				Node child = new Node(nodo, move);
+				List<Movement> possibleMoves = child.board.calcultePossibleMovesByColor(ownColor);
+				if(possibleMoves == null){
+					score = artificialInteligence.calculateLevelHardFunction(child.board, ownColor) - opponentScoreHard;
+					if(max < score){
+						max = score;
+						scoreReturn = artificialInteligence.calculateLevelEasyFunction(child.board, ownColor) - opponentScoreEasy;
+					}
+				}
+				else{
+					for(Movement movement : possibleMoves){
+						Node grandChild = new Node(child, movement);
+						score = artificialInteligence.calculateLevelHardFunction(grandChild.board, ownColor) - opponentScoreHard;
+						if(max < score){
+							max = score;
+							scoreReturn = artificialInteligence.calculateLevelEasyFunction(grandChild.board, ownColor) - opponentScoreEasy;
+						}
+					}
+				}
+				
 			}
 		}
-		return (64-max)/64;
+		return (64-scoreReturn)/64;
 	}
 	
 	public Double findInputC(Node node){
@@ -132,7 +172,7 @@ public class ReinforcementLearner implements Player{
 			newC = 1.0;
 			this.c = Math.random();
 		}
-		v = this.a * newA + this.b * newB + this.c * newC;
+		v = (this.a * newA) + (this.b * newB) + (this.c * newC);
 		
 		return v;
 	}
@@ -213,7 +253,7 @@ public class ReinforcementLearner implements Player{
 		
 		BufferedWriter bw = null;
 		
-		FileWriter fw = new FileWriter("Reinforcement.txt");
+		FileWriter fw = new FileWriter("ReinforcementMiniMax.txt");
 		
 		bw = new BufferedWriter (fw);
 		
