@@ -762,7 +762,7 @@ private void optionsHumansVSComputer() {
 	}
 	else if(option.equals("3")){
 		try {
-			player = new ReinforcementLearnerWithExtraInfo(artificialInteligence.humanColor);
+			player = new ReinforcementLearnerWithExtraInfo(Color.getOpositeColor(artificialInteligence.humanColor));
 		} catch (IOException e) {
 			System.out.println("Reinforcement Learning error");
 			e.printStackTrace();
@@ -770,7 +770,7 @@ private void optionsHumansVSComputer() {
 	}
 	else if(option.equals("4")){
 		try {
-			player = new ReinforcementLearner(artificialInteligence.humanColor);
+			player = new ReinforcementLearner(Color.getOpositeColor(artificialInteligence.humanColor));
 		} catch (IOException e) {
 			System.out.println("Reinforcement Learning error");
 			e.printStackTrace();
